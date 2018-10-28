@@ -1,0 +1,18 @@
+# mybatis
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: mysql123
+    url: jdbc:mysql:///sell?characterEncoding=utf-8&useSSL=false
+# 分页
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+server:
+  port: 8082
+  servlet:
+    context-path: /sell
+
