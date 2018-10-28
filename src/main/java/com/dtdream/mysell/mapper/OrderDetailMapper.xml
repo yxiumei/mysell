@@ -26,7 +26,7 @@
       <include refid="Base_Column_List" />
     FROM t_order_detail
     WHERE
-      product_id = #{productId,jdbcType=VARCHAR}
+      order_id = #{productId,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from t_order_detail

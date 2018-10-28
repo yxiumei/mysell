@@ -13,6 +13,8 @@ import com.dtdream.mysell.model.OrderDetail;
 import com.dtdream.mysell.model.OrderMaster;
 import com.dtdream.mysell.model.ProductInfo;
 import com.dtdream.mysell.utils.KeyUtil;
+import com.dtdream.mysell.utils.OrderMaster2OrderDtoConverter;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +28,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author 杨秀眉
+ */
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -87,12 +92,29 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response<OrderDto> findOne(String orderId) {
-        return null;
+        OrderMaster orderMaster = orderMasterMapper.selectByPrimaryKey(orderId);
+        if (null == orderMaster){
+            return Response.fail(ErrorMessage.GET_PRODUCT_MASTER_FAIL.toString());
+        }
+        List<OrderDetail> detailList = orderDetailMapper.findByOrder(orderId);
+        if (StringUtils.isEmpty(detailList)){
+            return Response.fail(ErrorMessage.ORDERDETAIL_NOT_EXIST.toString());
+        }
+        OrderDto orderDto = new OrderDto();
+        BeanUtils.copyProperties(orderMaster, orderDto);
+        orderDto.setOrderDetails(detailList);
+        return Response.ok(orderDto);
     }
 
     @Override
-    public PageInfo<OrderDto> findOrderList(Integer pageNo, Integer pageSize, String buyerOpenId) {
-        return null;
+    public Response<PageInfo<OrderDto>> findOrderList(Integer pageNo, Integer pageSize, String buyerOpenId) {
+        pageNo = pageNo == null ? 1 : pageNo;
+        pageSize = pageSize == null ? 10 : pageSize;
+        PageHelper.startPage(pageNo, pageSize);
+        List<OrderMaster> byBuyOpenId = orderMasterMapper.findByBuyOpenId(buyerOpenId);
+        List<OrderDto> orderDtos = OrderMaster2OrderDtoConverter.convert(byBuyOpenId);
+        PageInfo<OrderDto> pageInfoOrder = new PageInfo<>(orderDtos);
+        return Response.ok(pageInfoOrder);
     }
 
     @Override

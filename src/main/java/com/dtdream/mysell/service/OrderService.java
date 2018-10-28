@@ -30,7 +30,7 @@ public interface OrderService {
      * @param buyerOpenId
      * @return
      */
-    PageInfo<OrderDto> findOrderList(Integer pageNo, Integer pageSize, String buyerOpenId);
+    Response<PageInfo<OrderDto>> findOrderList(Integer pageNo, Integer pageSize, String buyerOpenId);
 
     /**
      *  取消订单
