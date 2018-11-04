@@ -6,6 +6,7 @@ import com.dtdream.mysell.dto.ProductInfoDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.enums.ErrorMessage;
 import com.dtdream.mysell.enums.ProductEnum;
+import com.dtdream.mysell.manage.ProductManage;
 import com.dtdream.mysell.mapper.ProductCategoryMapper;
 import com.dtdream.mysell.mapper.ProductInfoMapper;
 import com.dtdream.mysell.model.ProductCategory;
@@ -32,6 +33,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductInfoMapper productInfoMapper;
     @Autowired
     private ProductCategoryMapper productCategoryMapper;
+    @Autowired
+    private ProductManage productManage;
 
     @Override
     public Response findUpFrameProduct() {
@@ -72,27 +75,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Response<Boolean> increaseStock(List<CartDto> cartDtoList) {
-
-        return Response.ok(Boolean.TRUE);
+        try {
+            Response<Boolean> booleanResponse = productManage.increaseStock(cartDtoList);
+            return booleanResponse;
+        } catch (Exception e) {
+            log.error("OP[]ProductServiceImpl[]increaseStock[]increaseStock fail :{}", e.fillInStackTrace());
+            return Response.fail(ErrorMessage.UPDATE_PRODUCT_STOCK_FAIL.toString());
+        }
     }
 
     @Override
     public Response<Boolean> decreaseStock(List<CartDto> cartDtoList) {
-        for (CartDto cartDto: cartDtoList){
-            ProductInfo productInfo = productInfoMapper.selectByPrimaryKey(cartDto.getProductId());
-            if (null == productInfo){
-                return Response.fail(ErrorMessage.PRODUCT_NOT_EXIST.toString());
-            }
-            Integer result = productInfo.getProductStock() - cartDto.getProductQuantity();
-            if (result < 0){
-                Response.fail(ErrorMessage.INVENTORY_SHORTAGE.toString());
-            }
-            productInfo.setProductStock(result);
-            Integer i = productInfoMapper.updateByPrimaryKeySelective(productInfo);
-            if (i <= 0){
-                Response.fail(ErrorMessage.UPDATE_PRODUCT_STOCK_FAIL.toString());
-            }
+        try{
+            return productManage.decreaseStock(cartDtoList);
+        }catch (Exception e){
+            log.error("OP[]ProductServiceImpl[]decreaseStock[]decreaseStock fail :{}", e.fillInStackTrace());
+            return Response.fail(ErrorMessage.UPDATE_PRODUCT_STOCK_FAIL.toString());
         }
-        return Response.ok(Boolean.TRUE);
+
     }
 }

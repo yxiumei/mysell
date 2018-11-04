@@ -1,6 +1,7 @@
 package com.dtdream.mysell.manage;
 
 import com.dtdream.mysell.dto.CartDto;
+import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.mapper.OrderDetailMapper;
 import com.dtdream.mysell.mapper.OrderMasterMapper;
@@ -45,6 +46,23 @@ public class OrderManage {
         }
         Response<Boolean> response = productService.decreaseStock(cartDtoList);
         if (!response.getData()){
+            throw new Exception();
+        }
+    }
+
+    /**
+     * 取消订单
+     * @param orderMaster
+     * @param cartDtos
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void cancel(OrderMaster orderMaster, List<CartDto> cartDtos) throws Exception {
+        Integer result = orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
+        if (0 == result){
+            throw  new Exception();
+        }
+        Response<Boolean> booleanResponse = productService.increaseStock(cartDtos);
+        if (!booleanResponse.getData()){
             throw new Exception();
         }
     }

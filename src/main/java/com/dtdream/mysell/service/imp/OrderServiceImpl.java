@@ -1,10 +1,11 @@
-package com.dtdream.mysell.service;
+package com.dtdream.mysell.service.imp;
 
 import com.dtdream.mysell.dto.CartDto;
 import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.enums.ErrorMessage;
 import com.dtdream.mysell.enums.OrderStatusEnum;
+import com.dtdream.mysell.enums.PayStatusEum;
 import com.dtdream.mysell.manage.OrderManage;
 import com.dtdream.mysell.mapper.OrderDetailMapper;
 import com.dtdream.mysell.mapper.OrderMasterMapper;
@@ -12,6 +13,7 @@ import com.dtdream.mysell.mapper.ProductInfoMapper;
 import com.dtdream.mysell.model.OrderDetail;
 import com.dtdream.mysell.model.OrderMaster;
 import com.dtdream.mysell.model.ProductInfo;
+import com.dtdream.mysell.service.OrderService;
 import com.dtdream.mysell.utils.KeyUtil;
 import com.dtdream.mysell.utils.OrderMaster2OrderDtoConverter;
 import com.github.pagehelper.PageHelper;
@@ -25,12 +27,12 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @author 杨秀眉
- */
+
 @Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -45,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderManage orderManage;
 
     @Override
-    public Response<OrderDto> create(OrderDto orderDto) {
+    public Response<Map<String, String>> create(OrderDto orderDto) {
         try{
             String orderId = KeyUtil.getUniqueKey();
             // 总价
@@ -82,9 +84,11 @@ public class OrderServiceImpl implements OrderService {
                     .map(e -> new CartDto(e.getProductId(), e.getProductQuantity()))
                     .collect(Collectors.toList());
             orderManage.createOrder(orderTetails, orderMaster, cartDtoList);
-            return Response.ok(orderDto);
+            Map<String, String> map = new HashMap<>();
+            map.put("orderId",orderId);
+            return Response.ok(map);
         }catch (Exception e){
-            log.error("OP[]service[]OrderServiceImpl[]create[]create order fail:{}",e);
+            log.error("OP[]service[]OrderServiceImpl[]create[]create order fail:{}",e.fillInStackTrace());
             return Response.fail(ErrorMessage.CREATE_ORDER_FAIL.toString());
         }
 
@@ -119,16 +123,72 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response<OrderDto> cancel(OrderDto orderDto) {
-        return null;
+        try{
+            OrderMaster orderMaster = new OrderMaster();
+            // 订单是否是新单
+            if (!OrderStatusEnum.NEW.getCode().equals(orderDto.getOrderStatus())){
+                log.error("OP[]service[]OrderServiceImpl[]cancel[]oderStatus={},orderId={}",
+                        orderDto.getOrderStatus(), orderDto.getOrderId());
+                return Response.fail(ErrorMessage.ORDER_PARAM_ERROR.toString());
+            }
+            // 更改状态
+            orderDto.setOrderStatus(OrderStatusEnum.CANCEL.getCode());
+            BeanUtils.copyProperties(orderDto, orderMaster);
+            List<CartDto> cartDtos = orderDto.getOrderDetails().stream()
+                    .map(e -> new CartDto(e.getProductId(), e.getProductQuantity()))
+                    .collect(Collectors.toList());
+            orderManage.cancel(orderMaster, cartDtos);
+            // 如果订单已支付，去退款
+            if (PayStatusEum.SUCCESS.getCode().equals(orderDto.getPayStatus())){
+                // TODO 去做退款
+            }
+            return Response.ok(orderDto);
+        }catch (Exception e){
+            log.error("OP[]service[]OrderServiceImpl[]cancel[]cancel order fail:{}",e.fillInStackTrace());
+            return Response.fail(ErrorMessage.CANCEL_ORDER_FAIL.toString());
+        }
     }
 
     @Override
-    public Response<OrderDto> fainish(OrderDto orderDto) {
-        return null;
+    public Response<OrderDto> finish(OrderDto orderDto) {
+        if (!OrderStatusEnum.NEW.getCode().equals(orderDto.getOrderStatus())){
+            log.error("OP[]service[]OrderServiceImpl[]finish[]oderStatus={},orderId={}",
+                    orderDto.getOrderStatus(), orderDto.getOrderId());
+            return Response.fail(ErrorMessage.ORDER_PARAM_ERROR.toString());
+        }
+        OrderMaster orderMaster = new OrderMaster();
+        orderDto.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
+        BeanUtils.copyProperties(orderDto, orderMaster);
+        Integer result = orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
+        if (0 <= result){
+            log.error("OP[]service[]OrderServiceImpl[]finish[] finish order fail");
+            return Response.fail(ErrorMessage.FINISH_ORDER_FAIL.toString());
+        }
+        return Response.ok(orderDto);
     }
 
     @Override
     public Response<OrderDto> paidOrder(OrderDto orderDto) {
-        return null;
+        if (!OrderStatusEnum.NEW.getCode().equals(orderDto.getOrderStatus())){
+            log.error("OP[]service[]OrderServiceImpl[]paidOrder[]payStatus={},orderId={}",
+                    orderDto.getOrderStatus(), orderDto.getOrderId());
+            return Response.fail(ErrorMessage.ORDER_PARAM_ERROR.toString());
+        }
+        // 判断支付状态
+        if (!PayStatusEum.WAIT.getCode().equals(orderDto.getPayStatus())){
+            log.error("OP[]service[]OrderServiceImpl[]paidOrder[]payStatus={},orderId={}",
+                    orderDto.getPayStatus(), orderDto.getOrderId());
+            return Response.fail(ErrorMessage.ORDER_PAY_STATUS_ERROR.toString());
+        }
+        OrderMaster orderMaster = new OrderMaster();
+        orderDto.setPayStatus(PayStatusEum.SUCCESS.getCode());
+        BeanUtils.copyProperties(orderDto, orderMaster);
+        Integer result = orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
+        if (0 <= result){
+            log.error("OP[]service[]OrderServiceImpl[]paidOrder[] paidOrder fail");
+            return Response.fail(ErrorMessage.FINISH_ORDER_FAIL.toString());
+        }
+        return Response.ok(orderDto);
     }
+
 }

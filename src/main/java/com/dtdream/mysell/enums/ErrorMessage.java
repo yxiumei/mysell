@@ -2,6 +2,10 @@ package com.dtdream.mysell.enums;
 
 import lombok.Getter;
 
+/**
+ * @author 杨秀眉
+ */
+
 @Getter
 public enum ErrorMessage {
 
@@ -10,15 +14,28 @@ public enum ErrorMessage {
     PARAM_IS_NULL("param.is.null"),          // 参数是空
     PRODUCT_INFO_IS_NULL("product.info.is.null"),  // 商品信息是空
     CREATE_ORDER_FAIL("create.order.fail"),        // 创建订单失败
+    GET_ORDER_LIST_FAIL("get.order.list.fail"),        // 获得订单列表失败
+    GET_ORDER_DETAIL_FAIL("get.order.detail.fail"),        // 获得订单详情失败
+    OPENID_NO_EQUEAL("openid.no.equal"),        // 获得订单详情失败
     PRODUCT_NOT_EXIST("product.not.exist"),  // 商品不存在
     INVENTORY_SHORTAGE("inventory.shortage"), // 库存不足
     UPDATE_PRODUCT_STOCK_FAIL("update,product.stock.fail"), // 更新商品库存失败
     GET_PRODUCT_MASTER_FAIL("get.product.master.fail"),   // 获取商品信息失败
     ORDERDETAIL_NOT_EXIST("orderdetail.not.exist"),       // 订单详情没有存在
+    ORDER_PARAM_ERROR("order.param.error"),       //订单参数错误
+    ORDER_PAY_STATUS_ERROR("order.pay.status.error"),       //订单支付状态错误
+    CANCEL_ORDER_FAIL(" cancel.order.fail"),   // 取消订单失败
+    FINISH_ORDER_FAIL(" finish.order.fail"),  //  完结订单失败
+    PAY_ORDER_FINISH_FAIL("pay.order.finish.fail"),  //  完结订单失败
+    CART_IS_NULL("cart.is.null"),  //  购物车是空
     ;
+
 
     private String messages;
 
+    /**
+     * @param messages
+     */
     ErrorMessage(String messages) {
         this.messages = messages;
     }

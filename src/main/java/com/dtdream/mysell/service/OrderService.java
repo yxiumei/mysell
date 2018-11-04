@@ -4,6 +4,8 @@ import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Map;
+
 /**
  * @author 杨秀眉
  */
@@ -14,7 +16,7 @@ public interface OrderService {
      * @param orderDto
      * @return
      */
-    Response<OrderDto> create(OrderDto orderDto);
+    Response<Map<String, String>> create(OrderDto orderDto);
 
     /**
      * 查询单个订单
@@ -44,7 +46,7 @@ public interface OrderService {
      * @param orderDto
      * @return
      */
-    Response<OrderDto> fainish(OrderDto orderDto);
+    Response<OrderDto> finish(OrderDto orderDto);
 
     /**
      *  支付订单
