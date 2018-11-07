@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * http请求返回最外成对象
- * @author 杨秀眉
+ * @author yxiumei
  * @param <T>
  */
 @Data

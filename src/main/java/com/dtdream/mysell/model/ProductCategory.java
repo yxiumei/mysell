@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * 类目
- * @author 杨秀眉
+ * @author yxiumei
  */
 @Data
 public class ProductCategory {

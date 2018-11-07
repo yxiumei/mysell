@@ -5,7 +5,7 @@ import com.dtdream.mysell.dto.Response;
 
 /**
  * 买家
- * @Author 杨秀眉
+ * @Author yxiumei
  * @Data 2018/11/4 21:01
  */
 public interface BuyerService {

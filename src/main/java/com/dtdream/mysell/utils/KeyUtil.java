@@ -3,7 +3,7 @@ package com.dtdream.mysell.utils;
 import java.util.Random;
 
 /**
- * @author 杨秀眉
+ * @author yxiumei
  */
 public class KeyUtil {
 

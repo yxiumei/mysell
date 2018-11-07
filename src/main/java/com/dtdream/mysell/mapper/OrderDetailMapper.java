@@ -5,9 +5,15 @@ import com.dtdream.mysell.model.OrderDetail;
 import java.util.List;
 
 /**
- * @author 杨秀眉
+ * @author yxiumei
  */
 public interface OrderDetailMapper {
+
+    /**
+     * 删除订单详情
+     * @param detailId
+     * @return
+     */
     int deleteByPrimaryKey(String detailId);
 
     int insert(OrderDetail record);

@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 
 /**
  * 订单表单验证
- * @Author 杨秀眉
+ * @Author yxiumei
  * @Data 2018/10/30 23:29
  */
 @Data

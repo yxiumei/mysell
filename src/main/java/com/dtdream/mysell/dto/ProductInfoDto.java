@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 /**
  * 商品详情
- * @author 杨秀眉
+ * @author yxiumei
  */
 @Data
 public class ProductInfoDto {

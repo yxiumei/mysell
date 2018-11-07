@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * 商品详情表
- * @author 杨秀眉
+ * @author yxiumei
  */
 @Data
 public class ProductInfo {

@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * 订单详情
- * @author 杨秀眉
+ * @author yxiumei
  */
 @Data
 public class OrderDetail {

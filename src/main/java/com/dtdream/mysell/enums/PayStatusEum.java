@@ -3,7 +3,7 @@ package com.dtdream.mysell.enums;
 import lombok.Getter;
 
 /**
- * @author 杨秀眉
+ * @author yxiumei
  */
 @Getter
 public enum  PayStatusEum {

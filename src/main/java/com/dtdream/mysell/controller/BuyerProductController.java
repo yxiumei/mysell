@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 卖家商品
- * @author 杨秀眉
+ * @author yxiumei
  */
 @RestController
 @RequestMapping("/buyer/product")

@@ -13,14 +13,32 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
+  <sql id="table">t_order_master</sql>
   <sql id="Base_Column_List" >
     order_id, buyer_name, buyer_phone, buyer_address, buyer_openid, oder_amount, order_status, 
     pay_status, create_time, update_time
   </sql>
+  <sql id="standard">
+      #{orderId,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, #{buyerPhone,jdbcType=VARCHAR},
+      #{buyerAddress,jdbcType=VARCHAR}, #{buyerOpenid,jdbcType=VARCHAR}, #{oderAmount,jdbcType=DECIMAL},
+      #{orderStatus,jdbcType=TINYINT}, #{payStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP}
+  </sql>
+  <sql id="content">
+      <if test="buyerName != null" >buyer_name = #{buyerName,jdbcType=VARCHAR},</if>
+      <if test="buyerPhone != null" >buyer_phone = #{buyerPhone,jdbcType=VARCHAR},</if>
+      <if test="buyerAddress != null" >buyer_address = #{buyerAddress,jdbcType=VARCHAR},</if>
+      <if test="buyerOpenid != null" >buyer_openid = #{buyerOpenid,jdbcType=VARCHAR},</if>
+      <if test="oderAmount != null" >oder_amount = #{oderAmount,jdbcType=DECIMAL},</if>
+      <if test="orderStatus != null" >order_status = #{orderStatus,jdbcType=TINYINT},</if>
+      <if test="payStatus != null" >pay_status = #{payStatus,jdbcType=TINYINT},</if>
+      <if test="createTime != null" >create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+      <if test="updateTime != null" >update_time = #{updateTime,jdbcType=TIMESTAMP}</if>
+  </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from t_order_master
+    from <include refid="table"/>
     where order_id = #{orderId,jdbcType=VARCHAR}
   </select>
 
@@ -35,130 +53,20 @@
       </where>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from t_order_master
+    delete from <include refid="table"/>
     where order_id = #{orderId,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.dtdream.mysell.model.OrderMaster" >
-    insert into t_order_master (order_id, buyer_name, buyer_phone, 
-      buyer_address, buyer_openid, oder_amount, 
-      order_status, pay_status, create_time, 
-      update_time)
-    values (#{orderId,jdbcType=VARCHAR}, #{buyerName,jdbcType=VARCHAR}, #{buyerPhone,jdbcType=VARCHAR}, 
-      #{buyerAddress,jdbcType=VARCHAR}, #{buyerOpenid,jdbcType=VARCHAR}, #{oderAmount,jdbcType=DECIMAL}, 
-      #{orderStatus,jdbcType=TINYINT}, #{payStatus,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+    insert into <include refid="table"/>
+    (<include refid="Base_Column_List"/>)
+    values (<include refid="Base_Column_List"/>)
   </insert>
-  <insert id="insertSelective" parameterType="com.dtdream.mysell.model.OrderMaster" >
-    insert into t_order_master
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="orderId != null" >
-        order_id,
-      </if>
-      <if test="buyerName != null" >
-        buyer_name,
-      </if>
-      <if test="buyerPhone != null" >
-        buyer_phone,
-      </if>
-      <if test="buyerAddress != null" >
-        buyer_address,
-      </if>
-      <if test="buyerOpenid != null" >
-        buyer_openid,
-      </if>
-      <if test="oderAmount != null" >
-        oder_amount,
-      </if>
-      <if test="orderStatus != null" >
-        order_status,
-      </if>
-      <if test="payStatus != null" >
-        pay_status,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="orderId != null" >
-        #{orderId,jdbcType=VARCHAR},
-      </if>
-      <if test="buyerName != null" >
-        #{buyerName,jdbcType=VARCHAR},
-      </if>
-      <if test="buyerPhone != null" >
-        #{buyerPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="buyerAddress != null" >
-        #{buyerAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="buyerOpenid != null" >
-        #{buyerOpenid,jdbcType=VARCHAR},
-      </if>
-      <if test="oderAmount != null" >
-        #{oderAmount,jdbcType=DECIMAL},
-      </if>
-      <if test="orderStatus != null" >
-        #{orderStatus,jdbcType=TINYINT},
-      </if>
-      <if test="payStatus != null" >
-        #{payStatus,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.dtdream.mysell.model.OrderMaster" >
-    update t_order_master
+    update <include refid="table"/>
     <set >
-      <if test="buyerName != null" >
-        buyer_name = #{buyerName,jdbcType=VARCHAR},
-      </if>
-      <if test="buyerPhone != null" >
-        buyer_phone = #{buyerPhone,jdbcType=VARCHAR},
-      </if>
-      <if test="buyerAddress != null" >
-        buyer_address = #{buyerAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="buyerOpenid != null" >
-        buyer_openid = #{buyerOpenid,jdbcType=VARCHAR},
-      </if>
-      <if test="oderAmount != null" >
-        oder_amount = #{oderAmount,jdbcType=DECIMAL},
-      </if>
-      <if test="orderStatus != null" >
-        order_status = #{orderStatus,jdbcType=TINYINT},
-      </if>
-      <if test="payStatus != null" >
-        pay_status = #{payStatus,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
+      <include refid="content"/>
     </set>
-    where order_id = #{orderId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.dtdream.mysell.model.OrderMaster" >
-    update t_order_master
-    set buyer_name = #{buyerName,jdbcType=VARCHAR},
-      buyer_phone = #{buyerPhone,jdbcType=VARCHAR},
-      buyer_address = #{buyerAddress,jdbcType=VARCHAR},
-      buyer_openid = #{buyerOpenid,jdbcType=VARCHAR},
-      oder_amount = #{oderAmount,jdbcType=DECIMAL},
-      order_status = #{orderStatus,jdbcType=TINYINT},
-      pay_status = #{payStatus,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
 </mapper>

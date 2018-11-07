@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * 订单
- * @author 杨秀眉
+ * @author yxiumei
  */
 @Component
 public class OrderManage {
@@ -40,7 +40,7 @@ public class OrderManage {
         if (0 == aLong){
             throw new Exception();
         }
-        Integer i = orderMasterMapper.insertSelective(orderMaster);
+        Integer i = orderMasterMapper.insert(orderMaster);
         if(0 == i){
             throw new Exception();
         }

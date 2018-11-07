@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * 商品包含类目
- * @author 杨秀眉
+ * @author yxiumei
  */
 @Data
 public class ProductDto {

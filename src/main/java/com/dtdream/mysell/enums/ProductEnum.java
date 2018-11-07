@@ -4,7 +4,7 @@ import lombok.Getter;
 
 /**
  * 商品状态
- * @author 杨秀眉
+ * @author yxiumei
  */
 @Getter
 public enum ProductEnum {

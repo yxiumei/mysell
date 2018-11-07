@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author 杨秀眉
+ * @author yxiumei
  */
 @SpringBootApplication
 @MapperScan(basePackages = {"com.dtdream.mysell.mapper"})

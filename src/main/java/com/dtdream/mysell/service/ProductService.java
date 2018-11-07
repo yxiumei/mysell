@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * 商品
- * @author 杨秀眉
+ * @author yxiumei
  */
 public interface ProductService {
 
