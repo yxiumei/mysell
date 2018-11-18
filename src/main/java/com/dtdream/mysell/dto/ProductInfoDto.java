@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 public class ProductInfoDto {
 
     @JsonProperty("id")
+    private String productId;
+    @JsonProperty("name")
     private String productName;
 
     @JsonProperty("price")

@@ -1,5 +1,6 @@
 package com.dtdream.mysell.controller;
 
+import com.dtdream.mysell.dto.ProductDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 卖家商品
@@ -24,12 +27,8 @@ public class BuyerProductController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Response list(){
-//        List<ProductDto> upFrameProduct = productService.findUpFrameProduct();
-//        if (upFrameProduct == null){
-//            Response.fail("获取商品失败");
-//        }
-//        return Response.ok(upFrameProduct);
-        return null;
+    public Response<List<ProductDto>> list(){
+        Response<List<ProductDto>> upFrameProduct1 = productService.findUpFrameProduct();
+        return upFrameProduct1;
    }
 }

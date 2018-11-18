@@ -26,8 +26,8 @@ public class BuyerServiceImpl implements BuyerService {
         Response<OrderDto> one = orderService.findOne(orderId);
         OrderDto data = one.getData();
         if (ObjectUtils.isEmpty(data)){
-            log.error("OP[]BuyerServiceImpl[]findOrderOne[]get order info fail");
-            return Response.fail(ErrorMessage.GET_ORDER_DETAIL_FAIL.toString());
+            log.info("OP[]BuyerServiceImpl[]findOrderOne[]get order info fail");
+            return Response.ok(null);
         }
         // 判断openid是否相同
         if (!openid.equals(data.getBuyerOpenid())){
@@ -41,8 +41,8 @@ public class BuyerServiceImpl implements BuyerService {
         Response<OrderDto> orderOne = findOrderOne(orderId, openid);
         OrderDto orderDto = orderOne.getData();
         if (ObjectUtils.isEmpty(orderDto)){
-            log.error("OP[]BuyerServiceImpl[]cancelOrderOne[]orderDto:{}",orderDto);
-            return Response.fail(ErrorMessage.GET_ORDER_DETAIL_FAIL.toString());
+            log.info("OP[]BuyerServiceImpl[]cancelOrderOne[]orderDto:{}",orderDto);
+            return Response.ok(ErrorMessage.GET_ORDER_DETAIL_FAIL.toString());
         }
         Response<OrderDto> cancel = orderService.cancel(orderDto);
         return cancel;

@@ -14,6 +14,7 @@ import com.dtdream.mysell.model.OrderDetail;
 import com.dtdream.mysell.model.OrderMaster;
 import com.dtdream.mysell.model.ProductInfo;
 import com.dtdream.mysell.service.OrderService;
+import com.dtdream.mysell.service.PayService;
 import com.dtdream.mysell.utils.KeyUtil;
 import com.dtdream.mysell.utils.OrderMaster2OrderDtoConverter;
 import com.github.pagehelper.PageHelper;
@@ -45,6 +46,8 @@ public class OrderServiceImpl implements OrderService {
     private ProductInfoMapper productInfoMapper;
     @Autowired
     private OrderManage orderManage;
+    @Autowired
+    private PayService payService;
 
     @Override
     public Response<Map<String, String>> create(OrderDto orderDto) {
@@ -140,7 +143,7 @@ public class OrderServiceImpl implements OrderService {
             orderManage.cancel(orderMaster, cartDtos);
             // 如果订单已支付，去退款
             if (PayStatusEum.SUCCESS.getCode().equals(orderDto.getPayStatus())){
-                // TODO 去做退款
+                payService.refund(orderDto);
             }
             return Response.ok(orderDto);
         }catch (Exception e){

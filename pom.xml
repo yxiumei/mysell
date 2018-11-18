@@ -57,7 +57,6 @@
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper-spring-boot-starter</artifactId>
-			<!-- 特别注意版本问题, 看到评论以后得以纠正 -->
 			<version>1.2.3</version>
 		</dependency>
 
@@ -72,7 +71,21 @@
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 		</dependency>
+
+		<!--freemrker-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
+
+		<!---微信第三方sdk-->
+		<dependency>
+			<groupId>cn.springboot</groupId>
+			<artifactId>best-pay-sdk</artifactId>
+			<version>1.2.0</version>
+		</dependency>
 	</dependencies>
+
 
 	<build>
 
@@ -87,8 +100,9 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<includes>
-					<include>**/*.yml</include>
-					<include>**/*.xml</include>
+					<!--<include>**/*.yml</include>-->
+					<!--<include>**/*.xml</include>-->
+					<!--<include>*</include>-->
 				</includes>
 				<filtering>false</filtering>
 			</resource>

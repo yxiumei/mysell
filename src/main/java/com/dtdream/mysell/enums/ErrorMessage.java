@@ -28,6 +28,10 @@ public enum ErrorMessage {
     FINISH_ORDER_FAIL(" finish.order.fail"),  /*  完结订单失败*/
     PAY_ORDER_FINISH_FAIL("pay.order.finish.fail"),  /* 完结订单失败*/
     CART_IS_NULL("cart.is.null"),  /* 购物车是空*/
+    ORDER_AMOUNT_DIFFER("order.amount.differ"),  /* 订单金额不一致*/
+    AWEIXIN_NOTIFU_FAIL("weixin.notifu.fail"),  /* 微信通知失败*/
+    ORDER_PAY_FAIL("order.pay.fail"), /* 订单支付失败 */
+    WEIXIN_REFUND_FAIL("weixin.refund.fail"); /* 微信退款失败 */
     ;
 
     /**

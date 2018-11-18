@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductManage productManage;
 
     @Override
-    public Response findUpFrameProduct() {
+    public Response<List<ProductDto>> findUpFrameProduct() {
         // 查询上架商品
         List<ProductInfo> upFrameProduct = productInfoMapper.findUpFrameProduct(ProductEnum.DOWN_FRAME.getCode());
         if (upFrameProduct.size() == 0){
