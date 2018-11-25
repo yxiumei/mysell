@@ -44,4 +44,10 @@ public interface OrderMasterMapper {
      * @return
      */
     List<OrderMaster> findByBuyOpenId(@Param("oponId") String openId);
+
+    /**
+     * 查询所有订单
+     * @return
+     */
+    List<OrderMaster> findAll();
 }

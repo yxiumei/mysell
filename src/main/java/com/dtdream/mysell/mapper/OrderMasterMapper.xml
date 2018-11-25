@@ -52,6 +52,14 @@
         </if> ORDER BY create_time DESC
       </where>
   </select>
+
+  <select id="findAll" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_order_master
+    ORDER BY create_time DESC
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from <include refid="table"/>
     where order_id = #{orderId,jdbcType=VARCHAR}

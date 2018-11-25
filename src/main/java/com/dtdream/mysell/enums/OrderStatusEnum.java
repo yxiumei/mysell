@@ -7,7 +7,7 @@ import lombok.Getter;
  * @author yxiumei
  */
 @Getter
-public enum OrderStatusEnum {
+public enum OrderStatusEnum implements CodeEnum{
 
     NEW(0, "新单"),
     FINISHED(1, "完结"),
