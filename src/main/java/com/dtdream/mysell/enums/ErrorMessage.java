@@ -16,7 +16,7 @@ public enum ErrorMessage {
     CREATE_ORDER_FAIL("create.order.fail"),        /* 创建订单失败*/
     GET_ORDER_LIST_FAIL("get.order.list.fail"),        /* 获得订单列表失败*/
     GET_ORDER_DETAIL_FAIL("get.order.detail.fail"),        /*获得订单详情失败*/
-    OPENID_NO_EQUEAL("openid.no.equal"),        /* 获得订单详情失败*/
+    OPENID_NO_EQUEAL("openid.no.equal"),        /* openid不相等*/
     PRODUCT_NOT_EXIST("product.not.exist"),  /*商品不存在 */
     INVENTORY_SHORTAGE("inventory.shortage"), /* 库存不足 */
     UPDATE_PRODUCT_STOCK_FAIL("update,product.stock.fail"), /* 更新商品库存失败*/

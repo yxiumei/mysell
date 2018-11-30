@@ -2,6 +2,8 @@
     <head>
         <meta charset="UTF-8">
         <title>订单列表</title>
+        <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+        <script src="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
         <link href="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
@@ -38,7 +40,40 @@
                             <td>${orderDto.createTime?string('yyyy.MM.dd HH:mm:ss')}</td>
                             <#--<td>${orderDto.updateTime?string('yyyy.MM.dd HH:mm:ss')}</td>-->
                             <td>详情</td>
-                            <td>取消</td>
+                            <td>
+                                <#if orderDto.getOrderStatusEnum().getMsg() =="新单">
+                                    <a id="modal-630214" href="#modal-container-630214" role="button" class="btn" data-toggle="modal">取消</a>
+
+                                    <div class="modal fade" id="modal-container-630214" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">×
+                                                    </button>
+                                                    <h4 class="modal-title" id="myModalLabel">
+                                                        取消订单
+                                                    </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    是否确认取消订单？
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a type="button" class="btn btn-primary" data-dismiss="modal">否</a>
+                                                    <a class="btn btn-primary" href="/sell/order/cancel?orderId=${orderDto.getOrderId()}">
+                                                        是
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </#if>
+
+                            </td>
                         </tr>
                     </#list>
                     </tbody>
@@ -72,3 +107,48 @@
     </div>
     </body>
 </html>
+
+<#--<html xmlns="http://www.w3.org/1999/html">-->
+    <#--<head>-->
+        <#--<meta charset="UTF-8">-->
+        <#--<title>订单列表</title>-->
+        <#--<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>-->
+        <#--<script src="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>-->
+        <#--<link href="https://cdn.bootcss.com/twitter-bootstrap/3.0.1/css/bootstrap.min.css" rel="stylesheet">-->
+    <#--</head>-->
+    <#--<body>-->
+    <#--<div class="container">-->
+        <#--<div class="row clearfix">-->
+            <#--<div class="col-md-12 column">-->
+                <#--<a id="modal-630214" href="#modal-container-630214" role="button" class="btn" data-toggle="modal">触发遮罩窗体</a>-->
+
+                <#--<div class="modal fade" id="modal-container-630214" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+                    <#--<div class="modal-dialog">-->
+                        <#--<div class="modal-content">-->
+                            <#--<div class="modal-header">-->
+                                <#--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+                                <#--<h4 class="modal-title" id="myModalLabel">-->
+                                   <#--<a href="http://www.baidu.com">标题</a>-->
+                                <#--</h4>-->
+                            <#--</div>-->
+                            <#--<div class="modal-body">-->
+                                <#--内容...-->
+                            <#--</div>-->
+                            <#--<div class="modal-footer">-->
+                                <#--<a type="button" class="btn btn-primary" data-dismiss="modal">关闭</a>-->
+                                <#--<a class="btn btn-primary" href="http://www.baidu.com">-->
+                                <#--&lt;#&ndash;<a class="btn btn-primary" href="http://www.baidu.com"></a>&ndash;&gt;-->
+                                <#--标题-->
+                                <#--</a>-->
+                            <#--</div>-->
+                        <#--</div>-->
+
+                    <#--</div>-->
+
+                <#--</div>-->
+
+            <#--</div>-->
+        <#--</div>-->
+    <#--</div>-->
+    <#--</body>-->
+    <#--</html>-->
