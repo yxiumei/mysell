@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 买家端订单
+ * C端订单
  * @Author yxiumei
  * @Data 2018/10/30 23:26
  */
