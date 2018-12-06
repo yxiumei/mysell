@@ -2,8 +2,10 @@ package com.dtdream.mysell.service;
 
 import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
+import com.dtdream.mysell.model.OrderDetail;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,5 +56,12 @@ public interface OrderService {
      * @return
      */
     Response<OrderDto> paidOrder(OrderDto orderDto);
+
+    /**
+     *  订单详情列表
+     * @param orderId 父订单id
+     * @return
+     */
+    List<OrderDetail> orderDetails(String orderId);
 
 }

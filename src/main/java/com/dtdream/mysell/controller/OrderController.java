@@ -3,6 +3,7 @@ package com.dtdream.mysell.controller;
 import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.enums.ErrorMessage;
+import com.dtdream.mysell.model.OrderDetail;
 import com.dtdream.mysell.service.OrderMasterService;
 import com.dtdream.mysell.service.OrderService;
 import com.github.pagehelper.PageInfo;
@@ -13,10 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -72,4 +75,46 @@ public class OrderController {
         map.put("size", 10);
         return new ModelAndView("order/list",map);
     }
+
+    /**
+     * 获取订单详情
+     * @param orderId
+     * @param map
+     * @return
+     */
+    @GetMapping(value = "/detail/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView orderDetail(@PathVariable String orderId, Map<String, Object> map){
+        try{
+            if (StringUtils.isEmpty(orderId)){
+                map.put("msg","error");
+                log.error("OP[]OrderController[]orderDetail[]orderId is null");
+                return new ModelAndView("/order/detail",map);
+            }
+            Response<OrderDto> one = orderService.findOne(orderId);
+            OrderDto orderDto = one.getData();
+            if (!one.isSuccess() || null == orderDto) {
+                log.error("OP[]OrderController[]orderDetail[]order not exit");
+                map.put("msg","error");
+                return new ModelAndView("/order/detail",map);
+            }
+            List<OrderDetail> list = orderService.orderDetails(orderId);
+            orderDto.setOrderDetails(list);
+            Integer sum = 0;
+            // 计算订单总价
+            for (OrderDetail orderDetail : list){
+                Integer productQuantity = orderDetail.getProductQuantity();
+                sum = sum + orderDetail.getProductPrice().intValue() * productQuantity;
+            }
+            map.put("orderDto",orderDto);
+            map.put("orderId",orderId);
+            map.put("totalAmount",sum);
+            return new ModelAndView("/order/detail",map);
+        }catch (Exception e){
+            log.error("OP[]OrderController[]orderDetail[]get order detail fail");
+            map.put("msg","获取订单详情失败");
+            return new ModelAndView("/error",map);
+        }
+
+    }
+
 }

@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -192,6 +193,12 @@ public class OrderServiceImpl implements OrderService {
             return Response.fail(ErrorMessage.FINISH_ORDER_FAIL.toString());
         }
         return Response.ok(orderDto);
+    }
+
+    @Override
+    public List<OrderDetail> orderDetails(String orderId) {
+        List<OrderDetail> byOrder = orderDetailMapper.findByOrder(orderId);
+        return byOrder;
     }
 
 }
