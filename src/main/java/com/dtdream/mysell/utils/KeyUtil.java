@@ -11,6 +11,6 @@ public class KeyUtil {
         Random random = new Random();
         Integer num = random.nextInt(9000) + 1000;
         String key = System.currentTimeMillis() + String.valueOf(num);
-        return key ;
+        return key.substring(9,key.length()-1);
     }
 }

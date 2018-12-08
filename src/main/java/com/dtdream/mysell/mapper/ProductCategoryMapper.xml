@@ -41,8 +41,14 @@
         #{item}
       </foreach>
     </where>
-
   </select>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM <include refid="table"/>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from <include refid="table"/>
     where category_id = #{categoryId,jdbcType=INTEGER}

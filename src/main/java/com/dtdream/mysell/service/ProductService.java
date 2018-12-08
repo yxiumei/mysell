@@ -4,6 +4,7 @@ import com.dtdream.mysell.dto.CartDto;
 import com.dtdream.mysell.dto.ProductContainCategoryDto;
 import com.dtdream.mysell.dto.ProductDto;
 import com.dtdream.mysell.dto.Response;
+import com.dtdream.mysell.model.ProductInfo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -55,4 +56,25 @@ public interface ProductService {
      * @return
      */
     Response<Boolean> productDownFrom(String productId);
+
+    /**
+     * 保存商品
+     * @param productInfo
+     * @return
+     */
+    Response<Boolean> save(ProductInfo productInfo);
+
+    /**
+     * 编辑商品
+     * @param productInfo
+     * @return
+     */
+    Response<Boolean> update(ProductInfo productInfo);
+
+    /**
+     * 通过id查询商品
+     * @param productId
+     * @return
+     */
+    Response<ProductInfo> findOne(String productId);
 }

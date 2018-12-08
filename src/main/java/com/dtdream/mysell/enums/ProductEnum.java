@@ -7,7 +7,7 @@ import lombok.Getter;
  * @author yxiumei
  */
 @Getter
-public enum ProductEnum {
+public enum ProductEnum implements CodeEnum {
 
     UP_FRAME(0, "下架"),
     DOWN_FRAME(1, "上架"),

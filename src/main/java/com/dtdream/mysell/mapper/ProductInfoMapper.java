@@ -1,6 +1,7 @@
 package com.dtdream.mysell.mapper;
 
 import com.dtdream.mysell.model.ProductInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,5 +31,5 @@ public interface ProductInfoMapper {
      * @param productName 商品名
      * @return
      */
-    List<ProductInfo> findList(String productName);
+    List<ProductInfo> findList(@Param("productName") String productName);
 }

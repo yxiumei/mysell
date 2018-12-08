@@ -9,13 +9,16 @@ import com.dtdream.mysell.mapper.ProductInfoMapper;
 import com.dtdream.mysell.model.ProductCategory;
 import com.dtdream.mysell.model.ProductInfo;
 import com.dtdream.mysell.service.ProductService;
+import com.dtdream.mysell.utils.KeyUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -98,10 +101,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Response<PageInfo<ProductContainCategoryDto>> productList(Integer pageNo, Integer pageSize, String key) {
         Page page = PageHelper.startPage(pageNo, pageSize);
+
         List<ProductInfo> list = productInfoMapper.findList(key);
         if (list.size() == 0){
             log.error("OP[]service[]ProductServiceImpl[]productList[]Product list is null");
-            return Response.fail(ErrorMessage.GET__PRODUCT_LIST_FAIL_.toString());
+            return Response.ok(new PageInfo<>(page));
         }
         List<Integer> categoryTypeList = list.stream()
                 .map(ProductInfo::getCategoryType)
@@ -159,5 +163,36 @@ public class ProductServiceImpl implements ProductService {
             return Response.ok(Boolean.FALSE);
         }
         return Response.ok(Boolean.TRUE);
+    }
+
+    @Override
+    public Response<Boolean> save(ProductInfo productInfo) {
+        productInfo.setProductId(KeyUtil.getUniqueKey());
+        productInfo.setStatus(ProductEnum.UP_FRAME.getCode());
+        productInfo.setCreateTime(new Date());
+        productInfo.setUpdateTime(new Date());
+        Integer insert = productInfoMapper.insert(productInfo);
+        if (insert != 1){
+            log.error("OP[]ProductServiceImpl[]save[]save product fail,productInfo:{}",productInfo);
+            return Response.ok(Boolean.FALSE);
+        }
+        return Response.ok(Boolean.TRUE);
+    }
+
+    @Override
+    public Response<Boolean> update(ProductInfo productInfo) {
+        productInfo.setUpdateTime(new Date());
+        Integer i = productInfoMapper.updateByPrimaryKeySelective(productInfo);
+        if (i != 1){
+            log.error("OP[]ProductServiceImpl[]save[]edit product fail,productInfo:{}",productInfo);
+            return Response.ok(Boolean.FALSE);
+        }
+        return Response.ok(Boolean.TRUE);
+    }
+
+    @Override
+    public Response<ProductInfo> findOne(String productId) {
+        ProductInfo info = productInfoMapper.selectByPrimaryKey(productId);
+        return Response.ok(info);
     }
 }

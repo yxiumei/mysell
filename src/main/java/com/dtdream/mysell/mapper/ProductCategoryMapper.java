@@ -21,4 +21,10 @@ public interface ProductCategoryMapper {
      * 通过类目类型查询
      */
     List<ProductCategory> findCategoryByType(@Param("categoryType") List<Integer> list);
+
+    /**
+     * 查询所有类目
+     * @return
+     */
+    List<ProductCategory> findAll();
 }

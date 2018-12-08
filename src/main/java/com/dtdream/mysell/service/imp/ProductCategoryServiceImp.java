@@ -49,4 +49,10 @@ public class ProductCategoryServiceImp implements ProductCategoryService {
     public List<ProductCategory> findCategoryByType(List<Integer> list) {
         return productCategoryMapper.findCategoryByType(list);
     }
+
+    @Override
+    public List<ProductCategory> findAll() {
+        List<ProductCategory> all = productCategoryMapper.findAll();
+        return all;
+    }
 }
