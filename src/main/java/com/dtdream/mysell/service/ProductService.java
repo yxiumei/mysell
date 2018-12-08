@@ -1,8 +1,10 @@
 package com.dtdream.mysell.service;
 
 import com.dtdream.mysell.dto.CartDto;
+import com.dtdream.mysell.dto.ProductContainCategoryDto;
 import com.dtdream.mysell.dto.ProductDto;
 import com.dtdream.mysell.dto.Response;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -30,4 +32,27 @@ public interface ProductService {
      * @return
      */
     Response<Boolean> decreaseStock(List<CartDto> cartDtoList);
+
+    /**
+     * 获取商品列表
+     * @param pageNo 当前页
+     * @param pageSize 页大小
+     * @param key 搜索关键字(商品名)
+     * @return
+     */
+    Response<PageInfo<ProductContainCategoryDto>> productList(Integer pageNo, Integer pageSize, String key);
+
+    /**
+     * 商品上架
+     * @param productId 商品id
+     * @return
+     */
+    Response<Boolean> productUpFrom(String productId);
+
+    /**
+     * 商品下架
+     * @param productId 商品下架
+     * @return
+     */
+    Response<Boolean> productDownFrom(String productId);
 }

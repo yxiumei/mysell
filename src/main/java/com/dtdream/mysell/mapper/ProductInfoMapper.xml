@@ -48,6 +48,19 @@
       <include refid="table"/>
     WHERE status = #{status,jdbcType=INTEGER}
   </select>
+
+  <select id="findList" parameterType="java.lang.String" resultMap="BaseResultMap" >
+      SELECT
+      <include refid="Base_Column_List" />
+      FROM <include refid="table"/>
+      <where>
+          <if test="productName != null">
+              product_name = LIKE CONCAT('%',#{productName},'%')
+          </if>
+      </where>
+      ORDER BY create_time DESC
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from <include refid="table"/>
     where product_id = #{productId,jdbcType=VARCHAR}

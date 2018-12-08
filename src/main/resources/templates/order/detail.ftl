@@ -64,39 +64,62 @@
                 <td>${orderDto.productPrice * orderDto.productQuantity}</td>
             </tr>
             </#list>
-            <#--<#if orderDto.getOrderStatusEnum().getMsg() =="新单">-->
-                <#--<a id="modal-630214" href="#modal-container-630214" role="button" class="btn" data-toggle="modal">取消</a>-->
-                <#--<div class="modal fade" id="modal-container-630214" role="dialog"-->
-                     <#--aria-labelledby="myModalLabel" aria-hidden="true">-->
-                    <#--<div class="modal-dialog">-->
-                        <#--<div class="modal-content">-->
-                            <#--<div class="modal-header">-->
-                                <#--<button type="button" class="close" data-dismiss="modal"-->
-                                        <#--aria-hidden="true">×-->
-                                <#--</button>-->
-                                <#--<h4 class="modal-title" id="myModalLabel">-->
-                                    <#--取消订单-->
-                                <#--</h4>-->
-                            <#--</div>-->
-                            <#--<div class="modal-body">-->
-                                <#--是否确认取消订单？-->
-                            <#--</div>-->
-                            <#--<div class="modal-footer">-->
-                                <#--<a type="button" class="btn btn-primary" data-dismiss="modal">否</a>-->
-                                <#--<a class="btn btn-primary" href="/sell/order/cancel?orderId=${orderDto.getOrderId()}">-->
-                                    <#--是-->
-                                <#--</a>-->
-                            <#--</div>-->
-                        <#--</div>-->
-                    <#--</div>-->
-                <#--</div>-->
-            <#--</#if>-->
-
-
-
                         </tbody>
                     </table>
                 </div>
+
+                <#if orderDto.getOrderStatusEnum().getMsg() =="新单">
+                <button id="modal-630214" href="#modal-container-630215" style="margin-left: 20px" role="button" class="btn btn-default btn-info" data-toggle="modal">接单</button>
+                <button id="modal-630214" href="#modal-container-630214" style="margin-left: 10px" role="button" class="btn btn-default btn-info" data-toggle="modal">取消</button>
+                <div class="modal fade" id="modal-container-630215" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    接收订单
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                是否接收订单？
+                            </div>
+                            <div class="modal-footer">
+                                <a class="btn btn-primary" href="/sell/order/finish/${orderDto.getOrderId()}">
+                                    是
+                                </a>
+                                <a type="button" class="btn btn-primary" data-dismiss="modal">否</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="modal fade" id="modal-container-630214" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">×
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                取消订单
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            是否确认取消订单？
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-primary" href="/sell/order/cancel?orderId=${orderDto.getOrderId()}">
+                                是
+                            </a>
+                            <a type="button" class="btn btn-primary" data-dismiss="modal">否</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </#if>
 
                 <!--分页-->
                 <#--<div class="col-md-12 column" style="margin-right: 50px;">-->

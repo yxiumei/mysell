@@ -164,7 +164,7 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
         BeanUtils.copyProperties(orderDto, orderMaster);
         Integer result = orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
-        if (0 <= result){
+        if (result != 1){
             log.error("OP[]service[]OrderServiceImpl[]finish[] finish order fail");
             return Response.fail(ErrorMessage.FINISH_ORDER_FAIL.toString());
         }

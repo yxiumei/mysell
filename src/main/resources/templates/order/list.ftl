@@ -70,7 +70,7 @@
                 <td>${orderDto.payStatusStr}</td>
                 <td>${orderDto.createTime?string('yyyy.MM.dd HH:mm:ss')}</td>
             <#--<td>${orderDto.updateTime?string('yyyy.MM.dd HH:mm:ss')}</td>-->
-                <td>详情</td>
+                <td><a href="/sell/order/detail/${orderDto.orderId}">详情</a></td>
                 <td>
             <#if orderDto.getOrderStatusEnum().getMsg() =="新单">
                 <a id="modal-630214" href="#modal-container-630214" role="button" class="btn" data-toggle="modal">取消</a>

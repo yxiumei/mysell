@@ -1,9 +1,6 @@
 package com.dtdream.mysell.service.imp;
 
-import com.dtdream.mysell.dto.CartDto;
-import com.dtdream.mysell.dto.ProductDto;
-import com.dtdream.mysell.dto.ProductInfoDto;
-import com.dtdream.mysell.dto.Response;
+import com.dtdream.mysell.dto.*;
 import com.dtdream.mysell.enums.ErrorMessage;
 import com.dtdream.mysell.enums.ProductEnum;
 import com.dtdream.mysell.manage.ProductManage;
@@ -12,13 +9,16 @@ import com.dtdream.mysell.mapper.ProductInfoMapper;
 import com.dtdream.mysell.model.ProductCategory;
 import com.dtdream.mysell.model.ProductInfo;
 import com.dtdream.mysell.service.ProductService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,5 +93,71 @@ public class ProductServiceImpl implements ProductService {
             return Response.fail(ErrorMessage.UPDATE_PRODUCT_STOCK_FAIL.toString());
         }
 
+    }
+
+    @Override
+    public Response<PageInfo<ProductContainCategoryDto>> productList(Integer pageNo, Integer pageSize, String key) {
+        Page page = PageHelper.startPage(pageNo, pageSize);
+        List<ProductInfo> list = productInfoMapper.findList(key);
+        if (list.size() == 0){
+            log.error("OP[]service[]ProductServiceImpl[]productList[]Product list is null");
+            return Response.fail(ErrorMessage.GET__PRODUCT_LIST_FAIL_.toString());
+        }
+        List<Integer> categoryTypeList = list.stream()
+                .map(ProductInfo::getCategoryType)
+                .collect(Collectors.toList());
+        // 查询所有类目
+        List<ProductCategory> categoryByType =
+                productCategoryMapper.findCategoryByType(categoryTypeList);
+        List<ProductContainCategoryDto> productContainCategoryDtos = new ArrayList<>();
+        for (ProductInfo info : list){
+            ProductContainCategoryDto containCategoryDto = new ProductContainCategoryDto();
+            containCategoryDto.setProductInfo(info);
+            Integer categoryType = info.getCategoryType();
+            for (ProductCategory category : categoryByType){
+                if(category.getCategoryType().equals(categoryType)){
+                    containCategoryDto.setCategoryName(category.getCategoryName());
+                    productContainCategoryDtos.add(containCategoryDto);
+                    break;
+                }
+            }
+        }
+        PageInfo<ProductContainCategoryDto> pageInfo = new PageInfo<>(page);
+        pageInfo.setList(productContainCategoryDtos);
+        return Response.ok(pageInfo);
+    }
+
+    @Override
+    public Response<Boolean> productUpFrom(String productId) {
+        ProductInfo info = productInfoMapper.selectByPrimaryKey(productId);
+        if (!ProductEnum.UP_FRAME.getCode().equals(info.getStatus())){
+            log.error("OP[]ProductServiceImpl[]productUpFrom[]product status error");
+            return Response.ok(Boolean.FALSE);
+        }
+        info.setStatus(ProductEnum.DOWN_FRAME.getCode());
+        info.setUpdateTime(new Date());
+        Integer i = productInfoMapper.updateByPrimaryKeySelective(info);
+        if (i != 1){
+            log.error("OP[]ProductServiceImpl[]productUpFrom[]update product fail");
+            return Response.ok(Boolean.FALSE);
+        }
+        return Response.ok(Boolean.TRUE);
+    }
+
+    @Override
+    public Response<Boolean> productDownFrom(String productId) {
+        ProductInfo info = productInfoMapper.selectByPrimaryKey(productId);
+        if (!ProductEnum.DOWN_FRAME.getCode().equals(info.getStatus())){
+            log.error("OP[]ProductServiceImpl[]productDownFrom[]product status error");
+            return Response.ok(Boolean.FALSE);
+        }
+        info.setStatus(ProductEnum.UP_FRAME.getCode());
+        info.setUpdateTime(new Date());
+        Integer i = productInfoMapper.updateByPrimaryKeySelective(info);
+        if (i != 1){
+            log.error("OP[]ProductServiceImpl[]productDownFrom[]update product fail");
+            return Response.ok(Boolean.FALSE);
+        }
+        return Response.ok(Boolean.TRUE);
     }
 }

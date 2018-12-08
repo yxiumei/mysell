@@ -82,6 +82,12 @@ public class BuyOrderController {
 
     }
 
+    /**
+     * 订单详情
+     * @param openid
+     * @param orderId
+     * @return
+     */
     @GetMapping("/detail")
     public Response<OrderDto> detail(@RequestParam String openid,
                                      @RequestParam String orderId){
@@ -98,7 +104,12 @@ public class BuyOrderController {
         }
     }
 
-
+    /**
+     * 取消订单
+     * @param openid
+     * @param orderId
+     * @return
+     */
     @GetMapping("/cancel")
     public Response<Boolean> cancel(@RequestParam String openid,
                                     @RequestParam String orderId){

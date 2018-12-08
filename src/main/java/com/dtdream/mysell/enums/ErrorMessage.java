@@ -10,6 +10,7 @@ import lombok.Getter;
 public enum ErrorMessage {
 
     GET_UP_FRAME_PRODUCT_FAIL_("get.up.frame.product.fail"), /* 获取上架商品失败 */
+    GET__PRODUCT_LIST_FAIL_("get.product.list.fail"), /* 获取商品列表失败 */
     GET_ALL_CATEGROY_FAIL("get.all.category.fail"),   /* 获取所欲类目失败*/
     PARAM_IS_NULL("param.is.null"),          /* 参数是空*/
     PRODUCT_INFO_IS_NULL("product.info.is.null"),  /*商品信息是空*/

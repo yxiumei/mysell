@@ -12,6 +12,11 @@ public interface ProductInfoMapper {
 
     ProductInfo selectByPrimaryKey(String productId);
 
+    /**
+     * 更新商品
+     * @param record
+     * @return
+     */
     int updateByPrimaryKeySelective(ProductInfo record);
 
     /**
@@ -19,4 +24,11 @@ public interface ProductInfoMapper {
      * @return
      */
     List<ProductInfo> findUpFrameProduct(Integer status);
+
+    /**
+     * 查询商品列表
+     * @param productName 商品名
+     * @return
+     */
+    List<ProductInfo> findList(String productName);
 }

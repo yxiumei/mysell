@@ -117,4 +117,33 @@ public class OrderController {
 
     }
 
+    /**
+     * 接收订单
+     * @param orderId
+     * @param map
+     * @return
+     */
+    @GetMapping(value = "/finish/{orderId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ModelAndView finish(@PathVariable String orderId,Map<String,Object> map){
+        try {
+            if (StringUtils.isEmpty(orderId)){
+                log.error("OP[]OrderController[]orderDetail[]order is null");
+                map.put("msg","订单不存在！");
+                return new ModelAndView("/error",map);
+            }
+            Response<OrderDto> one = orderService.findOne(orderId);
+            Response<OrderDto> finish = orderService.finish(one.getData());
+            if (!finish.isSuccess() || null == finish.getData()){
+                log.error("OP[]OrderController[]orderDetail[]finsh order result:{}",finish);
+                map.put("msg","完结订单失败！");
+                return new ModelAndView("/error",map);
+            }
+            return new ModelAndView("redirect:/order/list");
+        }catch (Exception e){
+            log.error("OP[]OrderController[]orderDetail[]finsh error:{}",e.getStackTrace());
+            map.put("msg","完结订单失败！");
+            return new ModelAndView("/error",map);
+        }
+
+    }
 }
