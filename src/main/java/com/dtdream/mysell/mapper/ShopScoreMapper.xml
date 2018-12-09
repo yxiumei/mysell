@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dtdream.mysell.mapper.ShopScoreMapper">
+
+    <resultMap id="BaseResultMap" type="com.dtdream.mysell.model.ShopScore" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="shop_id" property="shopId" jdbcType="INTEGER" />
+        <result column="score" property="score" jdbcType="DOUBLE" />
+        <result column="service_score" property="serviceScore" jdbcType="DOUBLE" />
+        <result column="food_score" property="foodScore" jdbcType="DOUBLE" />
+        <result column="rank_rate" property="rankRate" jdbcType="DOUBLE" />
+        <result column="rating_count" property="ratingCount" jdbcType="INTEGER" />
+        <result column="high_opinion" property="highOpinion" jdbcType="INTEGER" />
+        <result column="differ_opinion" property="differOpinion" jdbcType="INTEGER" />
+        <result column="sell_count" property="sellCount" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, <include refid="clos"/>
+    </sql>
+    <sql id="clos">
+        shop_id, score, service_score, food_score, rank_rate, rating_count, high_opinion,
+        differ_opinion, sell_count, create_time, update_time
+    </sql>
+    <sql id="standard">
+        #{shopId,jdbcType=INTEGER}, #{score,jdbcType=DOUBLE},
+        #{serviceScore,jdbcType=DOUBLE}, #{foodScore,jdbcType=DOUBLE}, #{rankRate,jdbcType=DOUBLE},
+        #{ratingCount,jdbcType=INTEGER}, #{highOpinion,jdbcType=INTEGER}, #{differOpinion,jdbcType=INTEGER},
+        #{sellCount,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    </sql>
+    <sql id="table">t_shop_score</sql>
+    <sql id="content">
+        <if test="shopId != null" >shop_id = #{shopId,jdbcType=INTEGER},</if>
+        <if test="score != null" >score = #{score,jdbcType=DOUBLE},</if>
+        <if test="serviceScore != null" >service_score = #{serviceScore,jdbcType=DOUBLE},</if>
+        <if test="foodScore != null" >food_score = #{foodScore,jdbcType=DOUBLE},</if>
+        <if test="rankRate != null" >rank_rate = #{rankRate,jdbcType=DOUBLE},</if>
+        <if test="ratingCount != null" >rating_count = #{ratingCount,jdbcType=INTEGER},</if>
+        <if test="highOpinion != null" >high_opinion = #{highOpinion,jdbcType=INTEGER},</if>
+        <if test="differOpinion != null" >differ_opinion = #{differOpinion,jdbcType=INTEGER},</if>
+        <if test="sellCount != null" >sell_count = #{sellCount,jdbcType=INTEGER},</if>
+        <if test="createTime != null" >create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+        <if test="updateTime != null" >update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="com.dtdream.mysell.model.ShopScore" >
+      INSERT INTO <include refid="table"/>
+        (<include refid="clos"/>)
+      VALUES (<include refid="standard"/>)
+    </insert>
+
+    <update id="update" parameterType="com.dtdream.mysell.model.ShopScore">
+        update <include refid="table"/>
+        <set >
+            <include refid="content"/>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dtdream.mysell.mapper.ShopMapper">
+    <resultMap id="BaseResultMap" type="com.dtdream.mysell.model.Shop" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="delivery_time" property="deliveryTime" jdbcType="BIGINT" />
+        <result column="min_price" property="minPrice" jdbcType="DOUBLE" />
+        <result column="delivery_price" property="deliveryPrice" jdbcType="DOUBLE" />
+        <result column="bulletin" property="bulletin" jdbcType="VARCHAR" />
+        <result column="avatar" property="avatar" jdbcType="VARCHAR" />
+        <result column="pics" property="pics" jdbcType="VARCHAR" />
+        <result column="infos" property="infos" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, <include refid="clos"/>
+    </sql>
+    <sql id="clos">
+        shop_name, description, delivery_time, min_price, delivery_price, bulletin, avatar,
+        pics, infos, status, create_time, update_time
+    </sql>
+    <sql id="table">t_shop</sql>
+    <sql id="standard">
+       #{shopName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+       #{deliveryTime,jdbcType=BIGINT}, #{minPrice,jdbcType=DOUBLE}, #{deliveryPrice,jdbcType=DOUBLE},
+       #{bulletin,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{pics,jdbcType=VARCHAR},
+       #{infos,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+       #{updateTime,jdbcType=TIMESTAMP}
+    </sql>
+    <sql id="content">
+        <if test="name != null" >shop_name = #{shopName,jdbcType=VARCHAR},</if>
+        <if test="description != null" >description = #{description,jdbcType=VARCHAR},</if>
+        <if test="deliveryTime != null" >delivery_time = #{deliveryTime,jdbcType=BIGINT}, </if>
+        <if test="minPrice != null" > min_price = #{minPrice,jdbcType=DOUBLE},</if>
+        <if test="deliveryPrice != null" >delivery_price = #{deliveryPrice,jdbcType=DOUBLE},</if>
+        <if test="bulletin != null" >bulletin = #{bulletin,jdbcType=VARCHAR},</if>
+        <if test="avatar != null" >avatar = #{avatar,jdbcType=VARCHAR},</if>
+        <if test="pics != null" >pics = #{pics,jdbcType=VARCHAR},</if>
+        <if test="infos != null" >infos = #{infos,jdbcType=VARCHAR},</if>
+        <if test="status != null" >status = #{status,jdbcType=INTEGER},</if>
+        <if test="createTime != null" >create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+        <if test="updateTime != null" >update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="com.dtdream.mysell.model.Shop">
+      INSERT INTO <include refid="table"/>
+        (<include refid="clos"/>)
+      VALUES (<include refid="standard"/>)
+    </insert>
+
+    <update id="update" parameterType="com.dtdream.mysell.model.Shop">
+       UPDATE <include refid="table"/>
+        <set>
+          <include refid="content"/>
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

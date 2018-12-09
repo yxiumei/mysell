@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dtdream.mysell.mapper.MarketingCampaignMapper" >
+    <resultMap id="BaseResultMap" type="com.dtdream.mysell.model.MarketingCampaign" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="activity_name" property="activityName" jdbcType="VARCHAR" />
+        <result column="activity_description" property="activityDescription" jdbcType="VARCHAR" />
+        <result column="activity_type" property="activityType" jdbcType="INTEGER" />
+        <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, <include refid="clos"/>
+    </sql>
+    <sql id="clos">
+        activity_name, activity_description, activity_type, start_time, end_time, status,
+        create_time, update_time
+    </sql>
+    <sql id="table">t_marketing_campaign</sql>
+    <sql id="standard">
+        #{activityName,jdbcType=VARCHAR}, #{activityDescription,jdbcType=VARCHAR},
+        #{activityType,jdbcType=INTEGER}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},
+        #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    </sql>
+    <sql id="content">
+        <if test="activityName != null" >activity_name = #{activityName,jdbcType=VARCHAR},</if>
+        <if test="activityDescription != null" >activity_description = #{activityDescription,jdbcType=VARCHAR},</if>
+        <if test="activityType != null" >activity_type = #{activityType,jdbcType=INTEGER},</if>
+        <if test="startTime != null" >start_time = #{startTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="endTime != null" >end_time = #{endTime,jdbcType=TIMESTAMP},</if>
+        <if test="status != null" >status = #{status,jdbcType=INTEGER},</if>
+        <if test="createTime != null" >create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+        <if test="updateTime != null" >update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <insert id="insert" parameterType="com.dtdream.mysell.model.MarketingCampaign">
+        INSERT INTO <include refid="table"/>
+        (<include refid="clos"/>)
+        VALUES (<include refid="standard"/>)
+    </insert>
+
+    <update id="update" parameterType="com.dtdream.mysell.model.MarketingCampaign">
+        UPDATE <include refid="table"/>
+        <set>
+            <include refid="content"/>
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
