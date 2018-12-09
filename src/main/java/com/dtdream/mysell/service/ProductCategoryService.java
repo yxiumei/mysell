@@ -1,6 +1,8 @@
 package com.dtdream.mysell.service;
 
+import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.model.ProductCategory;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public interface ProductCategoryService {
      * @param record
      * @return
      */
-    int insertSelective(ProductCategory record);
+    Response<Boolean> insertSelective(ProductCategory record);
 
     /**
      * 查询类目
@@ -39,7 +41,7 @@ public interface ProductCategoryService {
      * @param record
      * @return
      */
-    int updateByPrimaryKeySelective(ProductCategory record);
+    Response<Boolean> updateByPrimaryKeySelective(ProductCategory record);
 
     /**
      * 更改类目
@@ -53,5 +55,18 @@ public interface ProductCategoryService {
      */
     List<ProductCategory> findCategoryByType(List<Integer> list);
 
+    /**
+     * 查询所有类目
+     * @return
+     */
     List<ProductCategory> findAll();
+
+    /**
+     * 查所有类
+     * @param pageNo
+     * @param pageSize
+     * @param categoryName
+     * @return
+     */
+    PageInfo<ProductCategory> findCategoryByCategoryName(Integer pageNo, Integer pageSize, String categoryName);
 }

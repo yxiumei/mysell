@@ -27,4 +27,11 @@ public interface ProductCategoryMapper {
      * @return
      */
     List<ProductCategory> findAll();
+
+    /**
+     * 查询类目
+     * @param categoryName
+     * @return
+     */
+    List<ProductCategory> findCategoryByCategoryName(@Param("categoryName") String categoryName);
 }

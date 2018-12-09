@@ -20,8 +20,8 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 类目 <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">操作</li>
-                <li><a href="/sell/seller/category/list">列表</a></li>
-                <li><a href="/sell/seller/category/index">新增</a></li>
+                <li><a href="/sell/admin/category/list">列表</a></li>
+                <li><a href="/sell/admin/category/index">新增</a></li>
             </ul>
         </li>
 

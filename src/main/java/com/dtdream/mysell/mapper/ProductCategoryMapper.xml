@@ -49,6 +49,17 @@
     FROM <include refid="table"/>
   </select>
 
+  <select id="findCategoryByCategoryName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM <include refid="table"/>
+    <where>
+      <if test="categoryName != null">
+        category_name LIKE CONCAT('%',#{categoryName},'%')
+      </if>
+    </where>
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from <include refid="table"/>
     where category_id = #{categoryId,jdbcType=INTEGER}
