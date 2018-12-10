@@ -10,12 +10,12 @@ import java.util.Date;
  */
 @Data
 public class ShopScore {
-    private Integer id;
+    private String id;
 
     /**
      * 店铺id
      */
-    private Byte shopId;
+    private String  shopId;
 
     /**
      * 商家综合评分

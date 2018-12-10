@@ -43,6 +43,17 @@
         from <include refid="table"/>
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
+        <where>
+            <if test="activityName != null">
+                activity_name LIKE CONCAT('%',#{activityName},'%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
 
     <insert id="insert" parameterType="com.dtdream.mysell.model.MarketingCampaign">
         INSERT INTO <include refid="table"/>
@@ -57,4 +68,8 @@
         </set>
         WHERE id = #{id,jdbcType=INTEGER}
     </update>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        DELETE FROM <include refid="table"/> WHERE id = #{activityId,jdbcType=INTEGER}
+    </delete>
 </mapper>

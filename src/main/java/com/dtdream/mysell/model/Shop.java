@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Data
 public class Shop {
-    private Integer id;
+    private String id;
 
     private String shopName;
 
