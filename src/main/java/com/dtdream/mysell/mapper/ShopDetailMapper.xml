@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dtdream.mysell.mapper.ShopDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.dtdream.mysell.model.ShopDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="shop_id" property="shopId" jdbcType="VARCHAR" />
+    <result column="bulletin" property="bulletin" jdbcType="VARCHAR" />
+    <result column="pics" property="pics" jdbcType="VARCHAR" />
+    <result column="infos" property="infos" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, <include refid="cols"/>
+  </sql>
+  <sql id="cols" >
+    shop_id, bulletin, pics, infos, status, create_time, update_time
+  </sql>
+  <sql id="table">t_shop_detail</sql>
+  <sql id="standard">
+      #{shopId,jdbcType=VARCHAR}, #{bulletin,jdbcType=VARCHAR},
+      #{pics,jdbcType=VARCHAR}, #{infos,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+  </sql>
+  <sql id="content">
+    <if test="shopId != null" > shop_id = #{shopId,jdbcType=VARCHAR},</if>
+    <if test="bulletin != null" >bulletin = #{bulletin,jdbcType=VARCHAR},</if>
+    <if test="pics != null" >pics = #{pics,jdbcType=VARCHAR},</if>
+    <if test="infos != null" >infos = #{infos,jdbcType=VARCHAR},</if>
+    <if test="status != null" >status = #{status,jdbcType=INTEGER},</if>
+    <if test="createTime != null" >create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+    <if test="updateTime != null" >update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from <include refid="table"/>
+    where shop_id = #{shopId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_shop_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dtdream.mysell.model.ShopDetail" >
+    insert into <include refid="table"/>
+    (<include refid="cols"/>)
+    values (<include refid="standard"/>)
+  </insert>
+
+  <update id="update" parameterType="com.dtdream.mysell.model.ShopDetail" >
+    update <include refid="table"/>
+    <set >
+      <include refid="content"/>
+    </set>
+    where shop_id = #{shop_id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dtdream.mysell.model.ShopDetail" >
+    update t_shop_detail
+    set shop_id = #{shopId,jdbcType=VARCHAR},
+      bulletin = #{bulletin,jdbcType=VARCHAR},
+      pics = #{pics,jdbcType=VARCHAR},
+      infos = #{infos,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

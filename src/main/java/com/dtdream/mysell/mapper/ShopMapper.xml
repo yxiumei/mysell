@@ -8,24 +8,20 @@
         <result column="delivery_time" property="deliveryTime" jdbcType="BIGINT" />
         <result column="min_price" property="minPrice" jdbcType="DOUBLE" />
         <result column="delivery_price" property="deliveryPrice" jdbcType="DOUBLE" />
-        <result column="bulletin" property="bulletin" jdbcType="VARCHAR" />
         <result column="avatar" property="avatar" jdbcType="VARCHAR" />
-        <result column="pics" property="pics" jdbcType="VARCHAR" />
-        <result column="infos" property="infos" jdbcType="VARCHAR" />
         <result column="status" property="status" jdbcType="INTEGER" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
     <sql id="Base_Column_List" >
-        id, shop_name, description, delivery_time, min_price, delivery_price, bulletin, avatar,
-        pics, infos, status, create_time, update_time
+        id, shop_name, description, delivery_time, min_price, delivery_price,avatar,
+        status, create_time, update_time
     </sql>
     <sql id="table">t_shop</sql>
     <sql id="standard">
        #{id,jdbcType=VARCHAR},#{shopName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
        #{deliveryTime,jdbcType=BIGINT}, #{minPrice,jdbcType=DOUBLE}, #{deliveryPrice,jdbcType=DOUBLE},
-       #{bulletin,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{pics,jdbcType=VARCHAR},
-       #{infos,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{avatar,jdbcType=VARCHAR},#{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
        #{updateTime,jdbcType=TIMESTAMP}
     </sql>
     <sql id="content">
@@ -34,10 +30,7 @@
         <if test="deliveryTime != null" >delivery_time = #{deliveryTime,jdbcType=BIGINT}, </if>
         <if test="minPrice != null" > min_price = #{minPrice,jdbcType=DOUBLE},</if>
         <if test="deliveryPrice != null" >delivery_price = #{deliveryPrice,jdbcType=DOUBLE},</if>
-        <if test="bulletin != null" >bulletin = #{bulletin,jdbcType=VARCHAR},</if>
         <if test="avatar != null" >avatar = #{avatar,jdbcType=VARCHAR},</if>
-        <if test="pics != null" >pics = #{pics,jdbcType=VARCHAR},</if>
-        <if test="infos != null" >infos = #{infos,jdbcType=VARCHAR},</if>
         <if test="status != null" >status = #{status,jdbcType=INTEGER},</if>
         <if test="createTime != null" >create_time = #{createTime,jdbcType=TIMESTAMP},</if>
         <if test="updateTime != null" >update_time = #{updateTime,jdbcType=TIMESTAMP},</if>

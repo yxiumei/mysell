@@ -32,24 +32,9 @@ public class Shop {
     private Double deliveryPrice;
 
     /**
-     * 公告
-     */
-    private String bulletin;
-
-    /**
      * 店铺主图
      */
     private String avatar;
-
-    /**
-     * 商家图片：
-     */
-    private String pics;
-
-    /**
-     * infos
-     */
-    private String infos;
 
     /**
      * 0:注销 1：正常
