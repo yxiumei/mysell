@@ -1,6 +1,7 @@
 package com.dtdream.mysell.service;
 
 import com.dtdream.mysell.dto.OrderDto;
+import com.dtdream.mysell.dto.PayResultDto;
 import com.dtdream.mysell.dto.Response;
 import com.lly835.bestpay.model.PayResponse;
 import com.lly835.bestpay.model.RefundResponse;
@@ -32,5 +33,10 @@ public interface PayService {
      */
     Response<RefundResponse> refund(OrderDto orderDto);
 
-
+    /**
+     * 仿微信支付
+     * @param orderId
+     * @return
+     */
+    Response<PayResultDto> pay(String orderId);
 }

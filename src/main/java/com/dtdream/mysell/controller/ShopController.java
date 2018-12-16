@@ -45,7 +45,7 @@ public class ShopController {
     public ModelAndView toEdit(@RequestParam(required = false) String  shopId, Map<String,Object> map){
 
         if (!StringUtils.isEmpty(shopId)){
-            Response<Shop> infoResponse = shopService.findOne(shopId);
+            Response<ShopImagesDto> infoResponse = shopService.findOne(shopId);
             map.put("shopDto",infoResponse.getData());
         }
         return new ModelAndView("/shop/index",map);

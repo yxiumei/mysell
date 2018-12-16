@@ -1,7 +1,6 @@
 package com.dtdream.mysell.manage;
 
 import com.dtdream.mysell.dto.CartDto;
-import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.mapper.OrderDetailMapper;
 import com.dtdream.mysell.mapper.OrderMasterMapper;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,9 +21,9 @@ import java.util.List;
 @Component
 public class OrderManage {
 
-    @Autowired
+    @Autowired(required = false)
     private OrderDetailMapper orderDetailMapper;
-    @Autowired
+    @Autowired(required = false)
     private OrderMasterMapper orderMasterMapper;
     @Autowired
     private ProductService productService;
@@ -36,10 +36,13 @@ public class OrderManage {
     @Transactional(rollbackFor = Exception.class)
     public void createOrder(List<OrderDetail> orderTetails, OrderMaster orderMaster,
                             List<CartDto> cartDtoList) throws Exception {
-        Long aLong = orderDetailMapper.batchInser(orderTetails);
+        Long aLong = orderDetailMapper.batchInsert(orderTetails);
         if (0 == aLong){
             throw new Exception();
         }
+        Date date = new Date();
+        orderMaster.setCreateTime(date);
+        orderMaster.setUpdateTime(date);
         Integer i = orderMasterMapper.insert(orderMaster);
         if(0 == i){
             throw new Exception();

@@ -67,7 +67,7 @@
   <insert id="insert" parameterType="com.dtdream.mysell.model.OrderMaster" >
     insert into <include refid="table"/>
     (<include refid="Base_Column_List"/>)
-    values (<include refid="Base_Column_List"/>)
+    values (<include refid="standard"/>)
   </insert>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.dtdream.mysell.model.OrderMaster" >

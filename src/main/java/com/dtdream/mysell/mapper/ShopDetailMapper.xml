@@ -32,7 +32,7 @@
     <if test="createTime != null" >create_time = #{createTime,jdbcType=TIMESTAMP},</if>
     <if test="updateTime != null" >update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByShopId" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from <include refid="table"/>

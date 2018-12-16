@@ -43,5 +43,5 @@ public interface OrderDetailMapper {
      * @param list
      * @return
      */
-    Long batchInser(List<OrderDetail> list);
+    Long batchInsert(List<OrderDetail> list);
 }

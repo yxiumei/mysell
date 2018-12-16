@@ -1,11 +1,14 @@
 package com.dtdream.mysell.service.imp;
 
+import com.alibaba.fastjson.JSON;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.dto.ShopImagesDto;
 import com.dtdream.mysell.enums.ShopEnum;
 import com.dtdream.mysell.manage.ShopManage;
+import com.dtdream.mysell.mapper.ShopDetailMapper;
 import com.dtdream.mysell.mapper.ShopMapper;
 import com.dtdream.mysell.model.Shop;
+import com.dtdream.mysell.model.ShopDetail;
 import com.dtdream.mysell.service.ShopService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -25,10 +28,12 @@ import java.util.List;
 @Service
 public class ShopServiceImp implements ShopService {
 
-    @Autowired
+    @Autowired(required = false)
     private ShopMapper shopMapper;
     @Autowired
     private ShopManage shopManage;
+    @Autowired(required = false)
+    private ShopDetailMapper shopDetailMapper;
 
     @Override
     public Response<Boolean> save(ShopImagesDto shop) {
@@ -42,8 +47,13 @@ public class ShopServiceImp implements ShopService {
 
     @Override
     public Response<Boolean> update(ShopImagesDto shopImagesDto) {
-        //shopMapper.update(shop);
-        return Response.ok(Boolean.TRUE);
+        try{
+            shopManage.update(shopImagesDto);
+            return Response.ok(Boolean.TRUE);
+        }catch (Exception e){
+            log.error("OP[]ShopServiceImp[]update[]update shop info fail:{}", e.getStackTrace());
+            return Response.fail("update.shop.info.fail");
+        }
     }
 
     @Override
@@ -56,9 +66,29 @@ public class ShopServiceImp implements ShopService {
     }
 
     @Override
-    public Response<Shop> findOne(String shopId) {
+    public Response<ShopImagesDto> findOne(String shopId) {
+        ShopImagesDto shopImagesDto = new ShopImagesDto();
         Shop shop = shopMapper.selectByPrimaryKey(shopId);
-        return Response.ok(shop);
+        if (null == shop) {
+            log.error("OP[]ShopServiceImp[]findOne[]find shop info fail");
+            return Response.fail("find.shop.fail");
+        }
+        shopImagesDto.setShop(shop);
+        ShopDetail shopDetail = shopDetailMapper.selectByShopId(shopId);
+        if (shopDetail == null) {
+            log.error("OP[]ShopServiceImp[]findOne[]find shop detail fail");
+            return Response.fail("find shop detail fail");
+        }
+        String bulletin = shopDetail.getBulletin();
+        shopImagesDto.setBulletin(bulletin);
+        shopDetail.setInfos(shopDetail.getInfos());
+        String pics = shopDetail.getPics();
+        List<String> list = JSON.parseArray(pics, String.class);
+        shopImagesDto.setShopImg1(list.get(0));
+        shopImagesDto.setShopImg2(list.get(1));
+        shopImagesDto.setShopImg3(list.get(2));
+        shopImagesDto.setShopImg4(list.get(3));
+        return Response.ok(shopImagesDto);
     }
 
     @Override

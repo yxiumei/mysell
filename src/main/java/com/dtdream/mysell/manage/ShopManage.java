@@ -80,4 +80,32 @@ public class ShopManage {
         return Boolean.TRUE;
 
     }
+    @Transactional(rollbackFor = Exception.class)
+    public void update(ShopImagesDto shopImagesDto) {
+        List<String> list = new ArrayList<>();
+        ShopDetail shopDetail = new ShopDetail();
+        Shop shop = shopImagesDto.getShop();
+        Date date = new Date();
+        shop.setUpdateTime(date);
+        int update = shopMapper.update(shop);
+        if (update != 1){
+            log.error("OP[]ShopManage[]update[]update shop info fail");
+            new Exception();
+        }
+        list.add(shopImagesDto.getShopImg1());
+        list.add(shopImagesDto.getShopImg2());
+        list.add(shopImagesDto.getShopImg3());
+        list.add(shopImagesDto.getShopImg4());
+        String s = JSON.toJSONString(list);
+        shopDetail.setInfos(shopImagesDto.getInfos());
+        shopDetail.setBulletin(shopImagesDto.getBulletin());
+        shopDetail.setInfos(s);
+        shopDetail.setUpdateTime(date);
+        shopDetail.setShopId(shop.getId());
+        int update1 = shopDetailMapper.update(shopDetail);
+        if (update1 != 1) {
+            log.error("OP[]ShopManage[]update[]update shop detail fail");
+            new Exception();
+        }
+    }
 }

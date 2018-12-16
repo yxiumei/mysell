@@ -36,7 +36,7 @@ public interface ShopService {
      * @param shopId
      * @return
      */
-    Response<Shop> findOne(String shopId);
+    Response<ShopImagesDto> findOne(String shopId);
 
     /**
      * 查询店铺列表

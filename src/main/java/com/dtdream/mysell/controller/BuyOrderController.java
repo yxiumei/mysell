@@ -3,8 +3,10 @@ package com.dtdream.mysell.controller;
 import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.enums.ErrorMessage;
+import com.dtdream.mysell.from.OrderFrom;
 import com.dtdream.mysell.service.BuyerService;
 import com.dtdream.mysell.service.OrderService;
+import com.dtdream.mysell.utils.OrderFrom2OrderDtoConverter;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -33,16 +36,17 @@ public class BuyOrderController {
 
     /**
      * 创建订单
-     * @param orderDto
+     * @param orderFrom
      * @return
      */
     @PostMapping("/create")
-    public Response<Map<String, String>> create(@RequestBody OrderDto orderDto ){
+    public Response<Map<String, String>> create(@Valid OrderFrom orderFrom ){
         try {
-            if (ObjectUtils.isEmpty(orderDto)) {
-                log.error("OP[]BuyOrderController[]create[]param error:{}", orderDto);
+            if (ObjectUtils.isEmpty(orderFrom)) {
+                log.error("OP[]BuyOrderController[]create[]param error:{}", orderFrom);
                 return Response.fail(ErrorMessage.PARAM_IS_NULL.toString());
             }
+            OrderDto orderDto = OrderFrom2OrderDtoConverter.convert(orderFrom);
             if (CollectionUtils.isEmpty(orderDto.getOrderDetails())) {
                 log.error("OP[]BuyOrderController[]create[]cart is null");
                 return Response.fail(ErrorMessage.CART_IS_NULL.toString());

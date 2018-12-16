@@ -1,10 +1,10 @@
 package com.dtdream.mysell.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.from.OrderFrom;
 import com.dtdream.mysell.model.OrderDetail;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -25,9 +25,10 @@ public class OrderFrom2OrderDtoConverter {
         orderDto.setBuyerOpenid(orderFrom.getOpenid());
         List<OrderDetail> list;
         try{
-            list = gson.fromJson(orderFrom.getItems(),
-                    new TypeToken<List<OrderDetail>>() {
-                    }.getType());
+            list = JSON.parseArray(orderFrom.getItems(), OrderDetail.class);
+//            list = gson.fromJson(orderFrom.getItems(),
+//                    new TypeToken<List<OrderDetail>>() {
+//                    }.getType());
         }catch (Exception e){
            log.error("OP[]OrderFrom2OrderDtoConverter[]convert[]convert error:string = {}", orderFrom.getItems());
             throw  new Exception();

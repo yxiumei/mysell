@@ -1,8 +1,10 @@
 package com.dtdream.mysell.service.imp;
 
 import com.dtdream.mysell.dto.OrderDto;
+import com.dtdream.mysell.dto.PayResultDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.enums.ErrorMessage;
+import com.dtdream.mysell.enums.PayStatusEum;
 import com.dtdream.mysell.service.OrderService;
 import com.dtdream.mysell.service.PayService;
 import com.dtdream.mysell.utils.MethUtils;
@@ -15,6 +17,11 @@ import com.lly835.bestpay.service.impl.BestPayServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * 支付
@@ -26,11 +33,13 @@ import org.springframework.stereotype.Service;
 public class PayServiceImpl implements PayService {
 
     private static final String ORDER_NAME = "微信支付";
-
+    private final static SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     @Autowired
     private OrderService orderService;
     @Autowired
     private BestPayServiceImpl bestPayService;
+
+
 
     @Override
     public Response<PayResponse> create(OrderDto data) {
@@ -94,5 +103,31 @@ public class PayServiceImpl implements PayService {
             log.error("OP[]PayServiceImpl[]refund[]refund fail");
             return Response.fail(ErrorMessage.WEIXIN_REFUND_FAIL.toString());
         }
+    }
+
+    @Override
+    public Response<PayResultDto> pay(String orderId) {
+        Response<OrderDto> one = orderService.findOne(orderId);
+        if (!one.isSuccess() || null == one.getData()) {
+            log.error("OP[]PayServiceImpl[]pay[]order no exist");
+            return Response.fail("该订单没有存在");
+        }
+        OrderDto orderDto = one.getData();
+        if (PayStatusEum.SUCCESS.getCode().equals(orderDto.getPayStatus())) {
+            log.error("OP[]PayServiceImpl[]order can not repeat pay");
+            return Response.fail("该订单已支付");
+        }
+        orderDto.setPayStatus(PayStatusEum.SUCCESS.getCode());
+        Response<Map<String, String>> mapResponse = orderService.create(orderDto);
+        if (!mapResponse.isSuccess() || CollectionUtils.isEmpty(mapResponse.getData())) {
+            log.error("OP[]PayServiceImpl[]pay[]update order pay status fail");
+            return Response.fail("支付失败");
+        }
+        PayResultDto dto = new PayResultDto();
+        dto.setAmount(orderDto.getOderAmount());
+        dto.setOrderId(orderId);
+        dto.setPayDate(FORMAT.format(new Date()));
+        dto.setPayWey(ORDER_NAME);
+        return Response.ok(dto);
     }
 }

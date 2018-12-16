@@ -7,7 +7,7 @@ public interface ShopDetailMapper {
 
     int insert(ShopDetail record);
 
-    ShopDetail selectByPrimaryKey(Integer id);
+    ShopDetail selectByShopId(String shopId);
 
     int update(ShopDetail record);
 
