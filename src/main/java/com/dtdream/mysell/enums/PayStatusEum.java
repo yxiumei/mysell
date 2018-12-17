@@ -10,7 +10,7 @@ public enum  PayStatusEum implements CodeEnum{
 
     WAIT(0, "等待支付"),
     SUCCESS(1, "支付成功"),
-
+    REFUNDED(2,"已退款")
     ;
 
     private Integer code;

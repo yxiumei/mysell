@@ -34,6 +34,13 @@ public interface PayService {
     Response<RefundResponse> refund(OrderDto orderDto);
 
     /**
+     * 仿 退款
+     * @param orderDto
+     * @return
+     */
+    Response<Boolean> imitateRefund(OrderDto orderDto);
+
+    /**
      * 仿微信支付
      * @param orderId
      * @return

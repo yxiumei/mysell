@@ -64,6 +64,7 @@ public class OrderController {
             log.error("OP[]BuyerProductController[]cencal[]get order fail");
             map.put("error",ErrorMessage.GET_ORDER_DETAIL_FAIL.toString());
         }
+        // 退款
         Response<OrderDto> cancel = orderService.cancel(one.getData());
         if (!cancel.isSuccess() || ObjectUtils.isEmpty(cancel.getData())){
             map.put("error",ErrorMessage.CANCEL_ORDER_FAIL.toString());

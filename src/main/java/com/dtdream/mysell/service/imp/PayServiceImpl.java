@@ -5,6 +5,8 @@ import com.dtdream.mysell.dto.PayResultDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.enums.ErrorMessage;
 import com.dtdream.mysell.enums.PayStatusEum;
+import com.dtdream.mysell.mapper.OrderMasterMapper;
+import com.dtdream.mysell.model.OrderMaster;
 import com.dtdream.mysell.service.OrderService;
 import com.dtdream.mysell.service.PayService;
 import com.dtdream.mysell.utils.MethUtils;
@@ -15,13 +17,12 @@ import com.lly835.bestpay.model.RefundRequest;
 import com.lly835.bestpay.model.RefundResponse;
 import com.lly835.bestpay.service.impl.BestPayServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * 支付
@@ -38,6 +39,8 @@ public class PayServiceImpl implements PayService {
     private OrderService orderService;
     @Autowired
     private BestPayServiceImpl bestPayService;
+    @Autowired(required = false)
+    private OrderMasterMapper orderMasterMapper;
 
 
 
@@ -91,7 +94,7 @@ public class PayServiceImpl implements PayService {
 
     @Override
     public Response<RefundResponse> refund(OrderDto orderDto) {
-        log.error("OP[]PayServiceImpl[]refund[]OrderDto:{}",orderDto);
+        log.info("OP[]PayServiceImpl[]refund[]OrderDto:{}",orderDto);
         try{
             RefundRequest refundRequest = new RefundRequest();
             refundRequest.setOrderId(orderDto.getOrderId());
@@ -106,6 +109,24 @@ public class PayServiceImpl implements PayService {
     }
 
     @Override
+    public Response<Boolean> imitateRefund(OrderDto orderDto) {
+        log.info("OP[]PayServiceImpl[]refund[]imitateRefund:{}",orderDto);
+        if (!PayStatusEum.SUCCESS.getCode().equals(orderDto.getPayStatus())) {
+            log.error("OP[]PayServiceImpl[]refund[]imitateRefund[]pay status error");
+            return Response.fail("该支付状态不正确");
+        }
+        OrderMaster orderMaster = new OrderMaster();
+        orderDto.setPayStatus(PayStatusEum.REFUNDED.getCode());
+        BeanUtils.copyProperties(orderDto,orderMaster);
+        Integer i = orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
+        if (i <= 0) {
+            log.error("OP[]PayServiceImpl[]refund[]imitateRefund[]refund fail");
+            return Response.fail("退款失败");
+        }
+        return Response.ok(Boolean.TRUE);
+    }
+
+    @Override
     public Response<PayResultDto> pay(String orderId) {
         Response<OrderDto> one = orderService.findOne(orderId);
         if (!one.isSuccess() || null == one.getData()) {
@@ -117,9 +138,9 @@ public class PayServiceImpl implements PayService {
             log.error("OP[]PayServiceImpl[]order can not repeat pay");
             return Response.fail("该订单已支付");
         }
-        orderDto.setPayStatus(PayStatusEum.SUCCESS.getCode());
-        Response<Map<String, String>> mapResponse = orderService.create(orderDto);
-        if (!mapResponse.isSuccess() || CollectionUtils.isEmpty(mapResponse.getData())) {
+        //orderDto.setPayStatus(PayStatusEum.SUCCESS.getCode());
+        Response<OrderDto> orderDtoResponse = orderService.paidOrder(orderDto);
+        if (!orderDtoResponse.isSuccess() || null == orderDtoResponse.getData()) {
             log.error("OP[]PayServiceImpl[]pay[]update order pay status fail");
             return Response.fail("支付失败");
         }

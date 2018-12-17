@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -39,13 +38,13 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
+    @Autowired(required = false)
     private OrderMasterMapper orderMasterMapper;
-    @Autowired
+    @Autowired(required = false)
     private OrderDetailMapper orderDetailMapper;
-    @Autowired
+    @Autowired(required = false)
     private ProductInfoMapper productInfoMapper;
-    @Autowired
+    @Autowired(required = false)
     private OrderManage orderManage;
     @Autowired
     private PayService payService;
@@ -144,7 +143,7 @@ public class OrderServiceImpl implements OrderService {
             orderManage.cancel(orderMaster, cartDtos);
             // 如果订单已支付，去退款
             if (PayStatusEum.SUCCESS.getCode().equals(orderDto.getPayStatus())){
-                payService.refund(orderDto);
+                payService.imitateRefund(orderDto);
             }
             return Response.ok(orderDto);
         }catch (Exception e){
@@ -188,7 +187,7 @@ public class OrderServiceImpl implements OrderService {
         orderDto.setPayStatus(PayStatusEum.SUCCESS.getCode());
         BeanUtils.copyProperties(orderDto, orderMaster);
         Integer result = orderMasterMapper.updateByPrimaryKeySelective(orderMaster);
-        if (0 <= result){
+        if (1 != result){
             log.error("OP[]service[]OrderServiceImpl[]paidOrder[] paidOrder fail");
             return Response.fail(ErrorMessage.FINISH_ORDER_FAIL.toString());
         }
