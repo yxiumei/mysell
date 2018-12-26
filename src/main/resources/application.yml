@@ -22,9 +22,9 @@ wechat:
   mchKey: ""
   ketPath: ""
   notifyUrl: ""
-logging:
-  level:
-    com.dtdream.mysell.mapper: debug
+#logging:
+#  level:
+#    com.dtdream.mysell.mapper: debug
 
 
 

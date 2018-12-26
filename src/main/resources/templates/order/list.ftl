@@ -133,5 +133,65 @@
     </div>
 </div>
 </div>
+<!-- 弹窗 -->
+<div class="modal fade" id="mySocket" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    消息提醒
+                </h4>
+            </div>
+            <div class="modal-body">
+                你有新的订单
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="javascript:document.getElementById('notice').pause();" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                <button onclick="location.reload()" class="btn btn-primary" "> 查看新订单</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 播放音乐 -->
+<audio id="notice" loop="loop">
+    <source src="/sell/mp3/ordernotice.mp3" type="audio/mpeg">
+</audio>
+<script>
+    var webSocket = null;
+    if ('WebSocket' in window) {
+        webSocket = new WebSocket("ws://localhost:8082/sell/webSocket");
+    } else {
+        alert("该浏览器不支持webSocket！");
+    }
+
+    webSocket.onopen = function (event) {
+        console.log("建立连接");
+    }
+
+    webSocket.onclose = function (event) {
+        console.log("关闭连接");
+    }
+
+    webSocket.onmessage = function (event) {
+        console.log("接收到信息:" + event.data);
+        // 显示弹出框，播放音乐
+        $('#mySocket').modal('show');
+        document.getElementById('notice').play();
+    }
+
+    webSocket.onerror = function () {
+        alert("发送通信错误！")
+    }
+    // 刷新触发
+    window.onbeforeunload = function () {
+        console.log("页面刷新，关闭连接");
+        webSocket.close();
+    }
+</script>
 </body>
 </html>

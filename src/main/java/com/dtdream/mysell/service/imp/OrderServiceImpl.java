@@ -48,6 +48,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderManage orderManage;
     @Autowired
     private PayService payService;
+    @Autowired
+    private WebSocket webSocket;
 
     @Override
     public Response<Map<String, String>> create(OrderDto orderDto) {
@@ -89,6 +91,8 @@ public class OrderServiceImpl implements OrderService {
             orderManage.createOrder(orderTetails, orderMaster, cartDtoList);
             Map<String, String> map = new HashMap<>();
             map.put("orderId",orderId);
+            // 发送消息
+            webSocket.sendMessage(orderId);
             return Response.ok(map);
         }catch (Exception e){
             log.error("OP[]service[]OrderServiceImpl[]create[]create order fail:{}",e.fillInStackTrace());
@@ -170,6 +174,7 @@ public class OrderServiceImpl implements OrderService {
         return Response.ok(orderDto);
     }
 
+    // todo 这里，当 先接单，后支付，会出现bug
     @Override
     public Response<OrderDto> paidOrder(OrderDto orderDto) {
         if (!OrderStatusEnum.NEW.getCode().equals(orderDto.getOrderStatus())){
