@@ -65,7 +65,7 @@
                 <td>${orderDto.buyerName}</td>
                 <td>${orderDto.buyerPhone}</td>
                 <td>${orderDto.buyerAddress}</td>
-                <td>${orderDto.oderAmount}</td>
+                <td>${orderDto.orderAmount}</td>
                 <td>${orderDto.orderStatusStr}</td>
                 <td>${orderDto.payStatusStr}</td>
                 <td>${orderDto.createTime?string('yyyy.MM.dd HH:mm:ss')}</td>
@@ -180,8 +180,9 @@
     webSocket.onmessage = function (event) {
         console.log("接收到信息:" + event.data);
         // 显示弹出框，播放音乐
-        $('#mySocket').modal('show');
         document.getElementById('notice').play();
+        $('#mySocket').modal('show');
+
     }
 
     webSocket.onerror = function () {

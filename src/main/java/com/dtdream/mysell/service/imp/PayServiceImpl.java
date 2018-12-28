@@ -41,7 +41,8 @@ public class PayServiceImpl implements PayService {
     private BestPayServiceImpl bestPayService;
     @Autowired(required = false)
     private OrderMasterMapper orderMasterMapper;
-
+    @Autowired
+    private WebSocket webSocket;
 
 
     @Override
@@ -49,7 +50,7 @@ public class PayServiceImpl implements PayService {
         try{
             PayRequest payRequest = new PayRequest();
             payRequest.setOpenid(data.getBuyerOpenid());
-            payRequest.setOrderAmount(data.getOderAmount().doubleValue());
+            payRequest.setOrderAmount(data.getOrderAmount().doubleValue());
             payRequest.setOrderId(data.getOrderId());
             payRequest.setOrderName(ORDER_NAME);
             payRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
@@ -75,9 +76,9 @@ public class PayServiceImpl implements PayService {
             }
             OrderDto orderDto = one.getData();
             // 判断金额是否一致
-            if (!MethUtils.compareTo(payResponse.getOrderAmount(),orderDto.getOderAmount().doubleValue())){
+            if (!MethUtils.compareTo(payResponse.getOrderAmount(),orderDto.getOrderAmount().doubleValue())){
                 log.error("OP[]PayServiceImpl[]notify[]orderAmount:{},payAmount:{}",
-                        orderDto.getOderAmount(),payResponse.getOrderAmount());
+                        orderDto.getOrderAmount(),payResponse.getOrderAmount());
                 return Response.fail(ErrorMessage.ORDER_AMOUNT_DIFFER.toString());
             }
             Response<OrderDto> orderDtoResponse = orderService.paidOrder(orderDto);
@@ -98,7 +99,7 @@ public class PayServiceImpl implements PayService {
         try{
             RefundRequest refundRequest = new RefundRequest();
             refundRequest.setOrderId(orderDto.getOrderId());
-            refundRequest.setOrderAmount(orderDto.getOderAmount().doubleValue());
+            refundRequest.setOrderAmount(orderDto.getOrderAmount().doubleValue());
             refundRequest.setPayTypeEnum(BestPayTypeEnum.WXPAY_H5);
             RefundResponse refund = bestPayService.refund(refundRequest);
             return Response.ok(refund);
@@ -145,10 +146,12 @@ public class PayServiceImpl implements PayService {
             return Response.fail("支付失败");
         }
         PayResultDto dto = new PayResultDto();
-        dto.setAmount(orderDto.getOderAmount());
+        dto.setAmount(orderDto.getOrderAmount());
         dto.setOrderId(orderId);
         dto.setPayDate(FORMAT.format(new Date()));
         dto.setPayWey(ORDER_NAME);
+        // 支付成功发送消息通知商户接单
+        webSocket.sendMessage(orderId);
         return Response.ok(dto);
     }
 }
