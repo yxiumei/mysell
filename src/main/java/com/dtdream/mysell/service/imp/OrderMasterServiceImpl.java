@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 public class OrderMasterServiceImpl implements OrderMasterService {
 
-    @Autowired
+    @Autowired(required = false)
     private OrderMasterMapper orderMasterMapper;
 
     @Override
@@ -40,6 +40,7 @@ public class OrderMasterServiceImpl implements OrderMasterService {
         Page page = PageHelper.startPage(pageNo, pageSize);
         List<OrderMaster> byBuyOpenId = orderMasterMapper.findAll();
         List<OrderDto> dtoList = OrderMaster2OrderDtoConverter.convert(byBuyOpenId);
+
         PageInfo<OrderDto> pageInfo = new PageInfo<>(page);
         pageInfo.setList(dtoList);
         return Response.ok(pageInfo);

@@ -94,11 +94,16 @@
 			<artifactId>best-pay-sdk</artifactId>
 			<version>1.2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-mp</artifactId>
+			<version>3.3.0</version>
+		</dependency>
 	</dependencies>
 
 
-	<build>
 
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -124,9 +129,5 @@
 				<filtering>false</filtering>
 			</resource>
 		</resources>
-
 	</build>
-
-
-
 </project>
