@@ -164,7 +164,7 @@
 <script>
     var webSocket = null;
     if ('WebSocket' in window) {
-        webSocket = new WebSocket("ws://localhost:8082/sell/webSocket");
+        webSocket = new WebSocket("ws://47.107.240.107:8082/sell/webSocket");
     } else {
         alert("该浏览器不支持webSocket！");
     }

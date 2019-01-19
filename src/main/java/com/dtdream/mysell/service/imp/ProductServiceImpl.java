@@ -13,12 +13,10 @@ import com.dtdream.mysell.utils.KeyUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,9 +30,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
+    @Autowired(required = false)
     private ProductInfoMapper productInfoMapper;
-    @Autowired
+    @Autowired(required = false)
     private ProductCategoryMapper productCategoryMapper;
     @Autowired
     private ProductManage productManage;
@@ -44,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
         // 查询上架商品
         List<ProductInfo> upFrameProduct = productInfoMapper.findUpFrameProduct(ProductEnum.DOWN_FRAME.getCode());
         if (upFrameProduct.size() == 0){
-            log.error("OP[]service[]ProductServiceImpl[]findUpFrameProduct[]upFrameProduct is null");
+            log.error("OP[]service[]ProductServiceImpl[]findUpFrameProduct[]upFrame Product is null");
             return Response.fail(ErrorMessage.GET_UP_FRAME_PRODUCT_FAIL_.toString());
         }
         List<Integer> categoryTypeList = upFrameProduct.stream()

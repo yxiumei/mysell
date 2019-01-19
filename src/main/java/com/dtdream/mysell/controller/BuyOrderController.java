@@ -74,7 +74,7 @@ public class BuyOrderController {
         log.info("OP[]BuyOrderController[]list[]openid:{}", openid);
         try{
             if (StringUtils.isEmpty(openid)){
-                log.error("OP[]BuyOrderController[]list[]param openid:{}", openid);
+                log.error("OP[]BuyOrderController[]list[]param openid is null");
                 return Response.fail(ErrorMessage.PARAM_IS_NULL.toString());
             }
             Response<PageInfo<OrderDto>> orderList = orderService.findOrderList(pageNo, pageSize, openid);
