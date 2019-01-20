@@ -6,7 +6,6 @@ import com.dtdream.mysell.model.OrderDetail;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author yxiumei
@@ -18,7 +17,7 @@ public interface OrderService {
      * @param orderDto
      * @return
      */
-    Response<Map<String, String>> create(OrderDto orderDto);
+    Response create(OrderDto orderDto);
 
     /**
      * 查询单个订单
@@ -55,7 +54,7 @@ public interface OrderService {
      * @param orderDto
      * @return
      */
-    Response<OrderDto> paidOrder(OrderDto orderDto);
+    Response paidOrder(OrderDto orderDto);
 
     /**
      *  订单详情列表
