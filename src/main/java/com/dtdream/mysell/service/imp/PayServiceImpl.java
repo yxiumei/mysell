@@ -10,6 +10,7 @@ import com.dtdream.mysell.model.OrderMaster;
 import com.dtdream.mysell.service.OrderService;
 import com.dtdream.mysell.service.PayService;
 import com.dtdream.mysell.utils.MethUtils;
+import com.dtdream.mysell.utils.WechatSendInfoUtils;
 import com.lly835.bestpay.enums.BestPayTypeEnum;
 import com.lly835.bestpay.model.PayRequest;
 import com.lly835.bestpay.model.PayResponse;
@@ -43,6 +44,8 @@ public class PayServiceImpl implements PayService {
     private OrderMasterMapper orderMasterMapper;
     @Autowired
     private WebSocket webSocket;
+    @Autowired
+    private WechatSendInfoUtils wechatSendInfoUtils;
 
 
     @Override
@@ -152,6 +155,8 @@ public class PayServiceImpl implements PayService {
         dto.setPayWey(ORDER_NAME);
         // 支付成功发送消息通知商户接单
         webSocket.sendMessage(orderId);
+        // 发送消息给用户支付成功
+        wechatSendInfoUtils.sendKefuMessage(orderDto);
         return Response.ok(dto);
     }
 }

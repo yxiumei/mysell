@@ -28,4 +28,9 @@ public class WechatAccountConfig{
      */
     private String keyPath;
     private String notifyUrl;
+
+    /**
+     * 消息模板id
+     */
+    private String templateId;
 }
