@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dtdream.mysell.mapper.UserInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.dtdream.mysell.model.UserInfo" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="openid" property="openid" jdbcType="VARCHAR" />
+        <result column="user_type" property="userType" jdbcType="INTEGER" />
+        <result column="user_img" property="userImg" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        id, <include refid="clos"/>
+    </sql>
+    <sql id="clos">
+        username, password, openid, user_type, user_img, create_time, update_time
+    </sql>
+    <sql id="table">
+        t_user_info
+    </sql>
+    <sql id="standard">
+      #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{openid,jdbcType=VARCHAR}, #{userType,jdbcType=INTEGER}, #{userImg,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    </sql>
+    <sql id="content">
+        <if test="username != null" >username = #{username,jdbcType=VARCHAR},</if>
+        <if test="password != null" >password = #{password,jdbcType=VARCHAR},</if>
+        <if test="openid != null" >openid = #{openid,jdbcType=VARCHAR},</if>
+        <if test="userType != null" >user_type = #{userType,jdbcType=INTEGER},</if>
+        <if test="userImg != null" >user_img = #{userImg,jdbcType=VARCHAR},</if>
+        <if test="createTime != null" >create_time = #{createTime,jdbcType=TIMESTAMP},</if>
+        <if test="updateTime != null" >update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+    </sql>
+
+    <insert id="insert" parameterType="com.dtdream.mysell.model.UserInfo" >
+        INSERT INTO <include refid="table"/>
+        (<include refid="clos"/>)
+        VALUES (<include refid="standard"/>)
+    </insert>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
+        where id = #{userId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
+        where openid = #{openId,jdbcType=INTEGER}
+    </select>
+</mapper>

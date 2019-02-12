@@ -1,6 +1,7 @@
 package com.dtdream.mysell.controller;
 
 import com.dtdream.mysell.config.WechatAccountConfig;
+import com.dtdream.mysell.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import me.chanjar.weixin.common.api.WxConsts;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -28,6 +29,8 @@ public class WechatController {
     private WxMpService wxMpService;
     @Autowired
     private WechatAccountConfig wechatAccountConfig;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @GetMapping("/authorize")
     public String auth(@RequestParam("returnUrl") String returnUrl){
@@ -52,6 +55,8 @@ public class WechatController {
             WxMpUser wxMpUser = wxMpService.oauth2getUserInfo(wxMpOAuth2AccessToken, null);
             log.info("WechatController[]WechatController[]userInfo【获得用户信息】={},【openid】={}",
                     wxMpUser, wxMpOAuth2AccessToken.getOpenId());
+            // 保存用户信息
+            userInfoService.insert(wxMpUser);
             // 获取opeinId
             String openId = wxMpOAuth2AccessToken.getOpenId();
             return "redirect:" + returnUrl + "?openid=" + openId;

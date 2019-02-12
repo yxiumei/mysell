@@ -8,7 +8,6 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorMessage {
-
     /** 获取上架商品失败 */
     GET_UP_FRAME_PRODUCT_FAIL_("get.up.frame.product.fail"),
     /** 获取商品列表失败 */
@@ -17,6 +16,8 @@ public enum ErrorMessage {
     GET_ALL_CATEGROY_FAIL("get.all.category.fail"),
     /* 参数是空*/
     PARAM_IS_NULL("param.is.null"),
+    /* 参数错误*/
+    PARAM_INVALID("param.invalid"),
     /**商品信息是空*/
     PRODUCT_INFO_IS_NULL("product.info.is.null"),
     /* 创建订单失败*/
@@ -56,8 +57,13 @@ public enum ErrorMessage {
     /* 订单支付失败 */
     ORDER_PAY_FAIL("order.pay.fail"),
     /* 微信退款失败 */
-    WEIXIN_REFUND_FAIL("weixin.refund.fail");
+    WEIXIN_REFUND_FAIL("weixin.refund.fail"),
+    /** 保存用户信息失败*/
+    SAVE_USER_INFO_FAIL("save.user.info.fail"),
+    /** 查询用户信息失败*/
+    FIND_USER_INFO_FAIL("find.user.info.fail"),
     ;
+
 
     /**
      * 错误信息

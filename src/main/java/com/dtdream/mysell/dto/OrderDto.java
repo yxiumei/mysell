@@ -27,6 +27,10 @@ public class OrderDto {
      * 买家微信openid
      */
     private String buyerOpenid;
+    /**
+     *  买家用户头像url
+     */
+    private String haedPortrait;
     private BigDecimal orderAmount;
     /**
      * 订单状态 默认0:新下单

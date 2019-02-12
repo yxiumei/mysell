@@ -13,8 +13,10 @@ import com.dtdream.mysell.mapper.ProductInfoMapper;
 import com.dtdream.mysell.model.OrderDetail;
 import com.dtdream.mysell.model.OrderMaster;
 import com.dtdream.mysell.model.ProductInfo;
+import com.dtdream.mysell.model.UserInfo;
 import com.dtdream.mysell.service.OrderService;
 import com.dtdream.mysell.service.PayService;
+import com.dtdream.mysell.service.UserInfoService;
 import com.dtdream.mysell.utils.KeyUtil;
 import com.dtdream.mysell.utils.OrderMaster2OrderDtoConverter;
 import com.github.pagehelper.PageHelper;
@@ -48,6 +50,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderManage orderManage;
     @Autowired
     private PayService payService;
+    @Autowired
+    private UserInfoService userInfoService;
 
 
     @Override
@@ -122,6 +126,11 @@ public class OrderServiceImpl implements OrderService {
         PageHelper.startPage(pageNo, pageSize);
         List<OrderMaster> byBuyOpenId = orderMasterMapper.findByBuyOpenId(buyerOpenId);
         List<OrderDto> orderDtos = OrderMaster2OrderDtoConverter.convert(byBuyOpenId);
+        // 通过openid查询用户信息
+        Response<UserInfo> userInfoByOpenId = userInfoService.findUserInfoByOpenId(buyerOpenId);
+        if (userInfoByOpenId.isSuccess() && null != userInfoByOpenId.getData()) {
+            orderDtos.forEach(orderDto -> orderDto.setHaedPortrait(userInfoByOpenId.getData().getUserImg()));
+        }
         PageInfo<OrderDto> pageInfoOrder = new PageInfo<>(orderDtos);
         return Response.ok(pageInfoOrder);
     }

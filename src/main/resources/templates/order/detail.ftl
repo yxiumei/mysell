@@ -68,7 +68,7 @@
                     </table>
                 </div>
 
-                <#if orderDto.getOrderStatusEnum().getMsg() =="新单">
+                <#if orderDto.getOrderStatus() == 0>
                 <button id="modal-630214" href="#modal-container-630215" style="margin-left: 20px" role="button" class="btn btn-default btn-info" data-toggle="modal">接单</button>
                 <button id="modal-630214" href="#modal-container-630214" style="margin-left: 10px" role="button" class="btn btn-default btn-info" data-toggle="modal">取消</button>
                 <div class="modal fade" id="modal-container-630215" role="dialog"
