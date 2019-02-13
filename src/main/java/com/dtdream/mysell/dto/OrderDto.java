@@ -35,10 +35,12 @@ public class OrderDto {
     /**
      * 订单状态 默认0:新下单
      */
+    @JsonIgnore
     private Integer orderStatus;
     private String orderStatusStr;
 
     /** 支付状态 0: 默认等待支付*/
+    @JsonIgnore
     private Integer payStatus;
     private String payStatusStr;
     @JsonSerialize(using = Date2LongSerializer.class)
@@ -56,11 +58,11 @@ public class OrderDto {
     }
 
     @JsonIgnore
-    private OrderStatusEnum getOrderStatusEnum(){
+    public OrderStatusEnum getOrderStatusEnum(){
         return EnumUtils.getByCode(orderStatus,OrderStatusEnum.class);
     }
     @JsonIgnore
-    private PayStatusEum getPayStatusEnum(){
+    public PayStatusEum getPayStatusEnum(){
         return EnumUtils.getByCode(payStatus,PayStatusEum.class);
     }
 }

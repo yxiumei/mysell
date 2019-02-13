@@ -55,11 +55,11 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public Response create(OrderDto orderDto) {
+    public Response<Map<String, String>> create(OrderDto orderDto) {
         try{
             String orderId = KeyUtil.getUniqueKey();
             // 总价
-            BigDecimal orderAmount = new BigDecimal(BigInteger.ZERO);
+            BigDecimal orderAmount = new BigDecimal(BigInteger.ONE);
             if (StringUtils.isEmpty(orderDto)){
                 log.error("OP[]service[]OrderServiceImpl[]create[]param is null");
                 return Response.fail(ErrorMessage.PARAM_IS_NULL.toString());
@@ -181,10 +181,9 @@ public class OrderServiceImpl implements OrderService {
         return Response.ok(orderDto);
     }
 
-
+    // todo 这里，当 先接单，后支付，会出现bug
     @Override
-    public Response paidOrder(OrderDto orderDto) {
-        // todo 这里，当 先接单，后支付，会出现bug
+    public Response<OrderDto> paidOrder(OrderDto orderDto) {
         if (!OrderStatusEnum.NEW.getCode().equals(orderDto.getOrderStatus())){
             log.error("OP[]service[]OrderServiceImpl[]paidOrder[]payStatus={},orderId={}",
                     orderDto.getOrderStatus(), orderDto.getOrderId());
@@ -209,7 +208,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDetail> orderDetails(String orderId) {
-        return orderDetailMapper.findByOrder(orderId);
+        List<OrderDetail> byOrder = orderDetailMapper.findByOrder(orderId);
+        return byOrder;
     }
 
 }
