@@ -49,6 +49,11 @@
         from <include refid="table"/>
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="findAll" resultMap="com.dtdream.mysell.model.ShopScore">
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
+    </select>
     <select id="findShopScoreByShopId" resultMap="BaseResultMap" parameterType="java.lang.String" >
         select
         <include refid="Base_Column_List" />

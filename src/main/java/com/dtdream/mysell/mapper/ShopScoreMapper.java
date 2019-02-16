@@ -3,6 +3,8 @@ package com.dtdream.mysell.mapper;
 import com.dtdream.mysell.model.ShopScore;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 店铺评分
  * @author yxiumei
@@ -36,4 +38,10 @@ public interface ShopScoreMapper {
      * @return
      */
     ShopScore findShopScoreByShopId(@Param("shopId") String shopId);
+
+    /**
+     * 查询所有店铺评分
+     * @return
+     */
+    List<ShopScore> findAll();
 }

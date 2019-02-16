@@ -27,14 +27,15 @@ import java.util.List;
 @Slf4j
 public class ShopManage {
 
-    @Autowired
+    @Autowired(required = false)
     private ShopMapper shopMapper;
-    @Autowired
+    @Autowired(required = false)
     private ShopScoreMapper shopScoreMapper;
-    @Autowired
+    @Autowired(required = false)
     private ShopDetailMapper shopDetailMapper;
 
-    private final double INIT_VALUE = 50;
+    private final double INIT_VALUE = 3;
+    private final static  double RANK_RATE = 60;
 
     @Transactional(rollbackFor = Exception.class)
     public Boolean save(ShopImagesDto shopImagesDto) throws Exception {
@@ -56,7 +57,7 @@ public class ShopManage {
         shopScore.setScore(INIT_VALUE);
         shopScore.setServiceScore(INIT_VALUE);
         shopScore.setFoodScore(INIT_VALUE);
-        shopScore.setRankRate(INIT_VALUE);
+        shopScore.setRankRate(RANK_RATE);
         shopScore.setCreateTime(date);
         shopScore.setUpdateTime(date);
         int insert1 = shopScoreMapper.insert(shopScore);
