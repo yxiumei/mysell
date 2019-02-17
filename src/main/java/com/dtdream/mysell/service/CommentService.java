@@ -1,5 +1,6 @@
 package com.dtdream.mysell.service;
 
+import com.dtdream.mysell.dto.CommentDto;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.model.Comment;
 
@@ -12,10 +13,10 @@ public interface CommentService {
 
     /**
      * 新增评论
-     * @param comment
+     * @param commentDto 评论请求参数
      * @return
      */
-    Response insert(Comment comment);
+    Response<Boolean> insert(CommentDto commentDto);
 
     /**
      * 通过id，查询评论
@@ -23,4 +24,10 @@ public interface CommentService {
      * @return
      */
     Response<Comment> findCommentById(Integer id);
+
+    /**
+     * 查询所有评论
+     * @return
+     */
+    Response<Comment> findAll();
 }

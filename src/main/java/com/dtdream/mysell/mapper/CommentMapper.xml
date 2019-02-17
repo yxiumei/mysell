@@ -10,7 +10,7 @@
         <result column="rate_type" property="rateType" jdbcType="INTEGER" />
         <result column="text" property="text" jdbcType="VARCHAR" />
         <result column="avatar" property="avatar" jdbcType="VARCHAR" />
-        <result column="recommend" property="recommend" jdbcType="VARCHAR" />
+        <result column="recommend" property="recommends" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
     </resultMap>
@@ -24,7 +24,7 @@
     <sql id="standard">
       #{orderId,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR},
       #{rateTime,jdbcType=TIMESTAMP}, #{score,jdbcType=INTEGER}, #{rateType,jdbcType=INTEGER},
-      #{text,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{recommend,jdbcType=VARCHAR},
+      #{text,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{recommends,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
     </sql>
     <sql id="table">t_comment</sql>
@@ -33,6 +33,12 @@
         <include refid="Base_Column_List" />
         from <include refid="table"/>
         where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
     </select>
 
     <insert id="insert" parameterType="com.dtdream.mysell.model.Comment" >

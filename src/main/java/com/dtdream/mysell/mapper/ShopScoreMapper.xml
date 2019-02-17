@@ -49,7 +49,7 @@
         from <include refid="table"/>
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <select id="findAll" resultMap="com.dtdream.mysell.model.ShopScore">
+    <select id="findAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from <include refid="table"/>

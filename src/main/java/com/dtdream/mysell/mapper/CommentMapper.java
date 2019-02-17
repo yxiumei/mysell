@@ -3,6 +3,8 @@ package com.dtdream.mysell.mapper;
 import com.dtdream.mysell.model.Comment;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 评论管理
  * @Author yxiumei
@@ -23,4 +25,10 @@ public interface CommentMapper {
      * @return
      */
     int insert(Comment comment);
+
+    /**
+     * 查询所有评论
+     * @return
+     */
+    List<Comment> findAll();
 }

@@ -4,6 +4,8 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 /**
  * 评论信息
  * @author yxiumei
@@ -51,7 +53,11 @@ public class Comment implements Serializable{
     /**
      *  推荐商品(不为空表示推荐本次商品)
      */
-    private String recommend;
+    private String recommends;
+
+    private List<String> recommend;
+
+    private String deliveryTime;
 
     /**
      * 创建时间
