@@ -9,23 +9,23 @@
     <#include "../common/nav.ftl">
 
 <#--主要内容content-->
-    <div id="page-content-wrapper" style="margin-top:0px">
+    <div id="page-content-wrapper" style="margin-top:0">
         <div class="container-fluid">
             <div class="row clearfix">
                 <div class="col-md-12 column">
 
                     <nav class="navbar navbar-default" role="navigation">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">我的商品</a>
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">我的店铺</a>
                         </div>
 
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li class="nav">
-                                    <a href="#">商品名称</a>
+                                    <a href="#">店铺信息</a>
                                 </li>
                             </ul>
-                            <form class="navbar-form navbar-left" role="search" action="/sell/admin/product/list" method="get">
+                            <form class="navbar-form navbar-left" role="search" action="/sell/admin/shop/list" method="get">
                                 <div class="form-group">
                                     <input name="key" type="text" class="form-control" />
                                 </div> <button type="submit" class="btn btn-default">搜索</button>
@@ -38,37 +38,36 @@
                         <thead>
                         <tr>
                             <th>编号</th>
-                            <th>商品编号</th>
-                            <th>商品名称</th>
-                            <th>商品图片</th>
-                            <th>商品价格</th>
-                            <th>商品库存</th>
-                            <th>商品描述</th>
-                            <th>商品类型</th>
-                            <th>商品状态</th>
+                            <th>店铺主图</th>
+                            <th>店铺描述</th>
+                            <th>配送时间</th>
+                            <th>商品最低价格</th>
+                            <th>最低起送价格</th>
+                            <th>店铺状态</th>
+                            <th>店铺名称</th>
                             <th>创建时间</th>
-                            <#--<th>更新时间</th>-->
+                            <th>修改时间</th>
                             <th colspan="2">操作</th>
                         </tr>
                         </thead>
                         <tbody>
-            <#list productPage.list as productDto>
+            <#list shopPage.list as shopDto>
             <tr>
-                <td>${productDto_index}</td>
-                <td>${productDto.productInfo.productId}</td>
-                <td>${productDto.productInfo.productName}</td>
-                <td><img src="${productDto.productInfo.productImg}" height="60px" width="80px"></td>
-                <td>${productDto.productInfo.productPrice}</td>
-                <td>${productDto.productInfo.productStock}</td>
-                <td>${productDto.productInfo.productDescription}</td>
-                <td>${productDto.categoryName}</td>
-                <td>${productDto.productStatus}</td>
-                <td>${productDto.productInfo.createTime?string('yyyy.MM.dd HH:mm:ss')}</td>
-                <#--<td>${productDto.productInfo.updateTime?string('yyyy.MM.dd HH:mm:ss')}</td>-->
+                <td>${shopDto_index}</td>
+                <td>${shopDto.shopName}</td>
+                <td>${shopDto.description}</td>
+                <td>${shopDto.deliveryTime}</td>
+                <td>${shopDto.minPrice}</td>
+                <td>${shopDto.deliveryPrice}</td>
+                <td>${(shopDto.status==1)?string('正常','删除')}</td>
+                <td><img src="${shopDto.avatar}" height="60px" width="80px"></td>
+                <td>${shopDto.createTime?string('yyyy.MM.dd')}</td>
+                <td>${shopDto.updateTime?string('yyyy.MM.dd')}</td>
                 <td>
-                    <a href="/sell/admin/product/index?productId=${productDto.productInfo.productId}">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                    <#if productDto.productStatus == "下架">
-                        <a id="modal-630214" href="#modal-container-630214" role="button" data-toggle="modal">上架</a>
+                    <a href="/sell/admin/shop/shopDetail?shopId=${shopDto.id}">详情</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/sell/admin/shop/index?shopId=${shopDto.id}">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <#if shopDto.status == 1>
+                        <a id="modal-630214" href="#modal-container-630214" role="button" data-toggle="modal">删除</a>
                         <div class="modal fade" id="modal-container-630214" role="dialog"
                              aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -78,38 +77,14 @@
                                                 aria-hidden="true">×
                                         </button>
                                         <h4 class="modal-title" id="myModalLabel">
-                                            商品上架
+                                            注销店铺
                                         </h4>
                                     </div>
                                     <div class="modal-body">
-                                        商品是否上架？
+                                        是否删除店铺？
                                     </div>
                                     <div class="modal-footer">
-                                        <a class="btn btn-primary" href="/sell/admin/product/productUpFrom/${productDto.productInfo.productId}">是</a>
-                                        <a type="button" class="btn btn-primary" data-dismiss="modal">否</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <#else>
-                        <a id="modal-630214" href="#modal-container-630215" role="button" data-toggle="modal">下架</a>
-                        <div class="modal fade" id="modal-container-630215" role="dialog"
-                             aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-hidden="true">×
-                                        </button>
-                                        <h4 class="modal-title" id="myModalLabel">
-                                            商品下架
-                                        </h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        商品是否下架？
-                                    </div>
-                                    <div class="modal-footer">
-                                        <a class="btn btn-primary" href="/sell/admin/product/productDownFrom/${productDto.productInfo.productId}">是</a>
+                                        <a class="btn btn-primary" href="/sell/admin/shop/deleteShop/${shopDto.id}">是</a>
                                         <a type="button" class="btn btn-primary" data-dismiss="modal">否</a>
                                     </div>
                                 </div>
@@ -129,24 +104,24 @@
                 <#if currentPage lte 1>
                 <li class="disabled"><a href="#">上一页</a></li>
                 <#else>
-                <li><a href="/sell/admin/product/list?page=${currentPage - 1}&pageSize=${size}">上一页</a></li>
+                <li><a href="/sell/admin/shop/list?page=${currentPage - 1}&pageSize=${size}">上一页</a></li>
                 </#if>
 
-                <#list 1..productPage.pages as index>
+                <#list 1..shopPage.pages as index>
                     <#if currentPage == index>
                         <li class="disabled">
-                            <a href="/sell/admin/product/list?page=${index}&pageSize=${size}">${index}</a>
+                            <a href="/sell/admin/shop/list?page=${index}&pageSize=${size}">${index}</a>
                         </li>
                     <#else>
                         <li>
-                            <a href="/sell/admin/product/list?page=${index}&pageSize=${size}">${index}</a>
+                            <a href="/sell/admin/shop/list?page=${index}&pageSize=${size}">${index}</a>
                         </li>
                     </#if>
                 </#list>
-                <#if currentPage gte productPage.pages>
+                <#if currentPage gte shopPage.pages>
                 <li class="disabled"><a href="#">下一页</a></li>
                 <#else>
-                <li><a href="/sell/admin/product/list?page=${currentPage + 1}&pageSize=${size}">下一页</a></li>
+                <li><a href="/sell/admin/shop/list?page=${currentPage + 1}&pageSize=${size}">下一页</a></li>
                 </#if>
                </ul>
             </div>

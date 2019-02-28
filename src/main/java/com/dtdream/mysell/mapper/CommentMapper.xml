@@ -39,6 +39,7 @@
         select
         <include refid="Base_Column_List" />
         from <include refid="table"/>
+        ORDER BY create_time DESC
     </select>
 
     <insert id="insert" parameterType="com.dtdream.mysell.model.Comment" >

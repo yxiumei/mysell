@@ -25,6 +25,15 @@
             </ul>
         </li>
 
+        <li class="dropdown open">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"><i class="fa fa-fw fa-plus"></i> 店铺 <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">操作</li>
+                <li><a href="/sell/admin/shop/list">列表</a></li>
+                <li><a href="/sell/admin/shop/index">新增</a></li>
+            </ul>
+        </li>
+
         <li>
             <a href="/sell/seller/logout"><i class="fa fa-fw fa-list-alt"></i> 登出</a>
         </li>

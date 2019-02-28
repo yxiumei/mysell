@@ -34,7 +34,7 @@ public class ShopController {
                              @RequestParam(required = false) String key,
                              Map<String,Object> map){
         Response<PageInfo<Shop>> response = shopService.findAll(page,pageSize,key);
-        map.put("productPage", response.getData());
+        map.put("shopPage", response.getData());
         map.put("currentPage", page);
         map.put("size", pageSize);
         return new ModelAndView("shop/list",map);
@@ -66,7 +66,7 @@ public class ShopController {
             map.put("msg",response.getMsg());
             return new ModelAndView("/error",map);
         }
-        return new ModelAndView("redirect:/admin/product/list");
+        return new ModelAndView("redirect:/admin/shop/list");
     }
 
 
