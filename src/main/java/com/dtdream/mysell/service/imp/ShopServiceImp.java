@@ -1,21 +1,30 @@
 package com.dtdream.mysell.service.imp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.dtdream.mysell.config.SupportConfig;
 import com.dtdream.mysell.dto.Response;
+import com.dtdream.mysell.dto.ShopDto;
 import com.dtdream.mysell.dto.ShopImagesDto;
+import com.dtdream.mysell.enums.ErrorMessage;
 import com.dtdream.mysell.enums.ShopEnum;
 import com.dtdream.mysell.manage.ShopManage;
 import com.dtdream.mysell.mapper.ShopDetailMapper;
 import com.dtdream.mysell.mapper.ShopMapper;
+import com.dtdream.mysell.mapper.ShopScoreMapper;
 import com.dtdream.mysell.model.Shop;
 import com.dtdream.mysell.model.ShopDetail;
+import com.dtdream.mysell.model.ShopScore;
+import com.dtdream.mysell.model.SupportDto;
 import com.dtdream.mysell.service.ShopService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -34,6 +43,10 @@ public class ShopServiceImp implements ShopService {
     private ShopManage shopManage;
     @Autowired(required = false)
     private ShopDetailMapper shopDetailMapper;
+    @Autowired
+    private SupportConfig supportConfig;
+    @Autowired(required = false)
+    private ShopScoreMapper shopScoreMapper;
 
     @Override
     public Response<Boolean> save(ShopImagesDto shop) {
@@ -61,13 +74,17 @@ public class ShopServiceImp implements ShopService {
         Shop shop = shopMapper.selectByPrimaryKey(shopId);
         shop.setStatus(ShopEnum.CANCEL.getCode());
         shop.setUpdateTime(new Date());
-        shopMapper.update(shop);
+        shopMapper.updateByPrimaryKeySelective(shop);
         return Response.ok(Boolean.TRUE);
     }
 
     @Override
     public Response<ShopImagesDto> findOne(String shopId) {
         ShopImagesDto shopImagesDto = new ShopImagesDto();
+        if (null == shopId) {
+            log.error("OP[]ShopServiceImp[]findOne[] shop is null");
+            return Response.fail(ErrorMessage.PARAM_IS_NULL.toString());
+        }
         Shop shop = shopMapper.selectByPrimaryKey(shopId);
         if (null == shop) {
             log.error("OP[]ShopServiceImp[]findOne[]find shop info fail");
@@ -98,5 +115,43 @@ public class ShopServiceImp implements ShopService {
         PageInfo<Shop> pageInfo = new PageInfo<>(page);
         pageInfo.setList(all);
         return Response.ok(pageInfo);
+    }
+
+    @Override
+    public Response<ShopDto> getShopInfo(String shopId) {
+        List<SupportDto> supportDtos = supportConfig.getSupportDtos();
+        Shop shop = shopMapper.selectByPrimaryKey(shopId);
+        ShopDetail shopDetail = shopDetailMapper.selectByShopId(shopId);
+        ShopScore shopScore = shopScoreMapper.findShopScoreByShopId(shopId);
+        if (null == shop || null == shopDetail || null == shopScore) {
+            log.error("OP[]ShopService[]getShopInfo[]shop is null :shopId:{}", shopId);
+            return Response.fail(ErrorMessage.PARAM_IS_NULL.toString());
+        }
+
+        ShopDto shopDto = new ShopDto();
+        BeanUtils.copyProperties(shop, shopDto);
+        shopDto.setName(shop.getShopName());
+        shopDto.setBulletin(shopDetail.getBulletin());
+        String pics = shopDetail.getPics();
+        String infos = shopDetail.getInfos();
+        if (!StringUtils.isEmpty(pics)) {
+            List<String> list = JSONArray.parseArray(pics, String.class);
+            shopDto.setPics(list);
+        }
+        if (!StringUtils.isEmpty(infos)) {
+            List<String> list = JSONArray.parseArray(infos, String.class);
+            shopDto.setInfos(list);
+        }
+
+        shopDto.setFoodScore(shopScore.getFoodScore());
+        shopDto.setDifferOpinion(shopScore.getDifferOpinion());
+        shopDto.setHighOpinion(shopScore.getHighOpinion());
+        shopDto.setRatingCount(shopScore.getSellCount());
+        shopDto.setScore(shopScore.getScore());
+        shopDto.setRankRate(shopScore.getRankRate());
+        shopDto.setSellCount(shopScore.getSellCount());
+        shopDto.setServiceScore(shopScore.getServiceScore());
+        shopDto.setSupports(supportDtos);
+        return Response.ok(shopDto);
     }
 }

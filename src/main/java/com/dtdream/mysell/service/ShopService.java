@@ -1,6 +1,7 @@
 package com.dtdream.mysell.service;
 
 import com.dtdream.mysell.dto.Response;
+import com.dtdream.mysell.dto.ShopDto;
 import com.dtdream.mysell.dto.ShopImagesDto;
 import com.dtdream.mysell.model.Shop;
 import com.github.pagehelper.PageInfo;
@@ -46,4 +47,11 @@ public interface ShopService {
      * @return
      */
     Response<PageInfo<Shop>> findAll(Integer page, Integer pageSize, String key);
+
+    /**
+     * 获取店铺详情
+     * @param shopId 店铺id
+     * @return 店铺详情
+     */
+    Response<ShopDto> getShopInfo(String shopId);
 }

@@ -1,6 +1,6 @@
 package com.dtdream.mysell.dto;
 
-import com.dtdream.mysell.model.MarketingCampaign;
+import com.dtdream.mysell.model.SupportDto;
 import lombok.Data;
 
 import java.util.List;
@@ -36,14 +36,6 @@ public class ShopDto {
      * 店铺主图
      */
     private String avatar;
-    /**
-     * 商家图片：
-     */
-    private String pics;
-    /**
-     * infos
-     */
-    private String infos;
     /**
      * 商家综合评分
      */
@@ -84,7 +76,13 @@ public class ShopDto {
      */
     private Integer sellCount;
 
-    /** 优惠 */
-    private List<MarketingCampaign> supports;
+    /** 图片*/
+    private List<String> pics;
+
+    /** 详情*/
+    private List<String> infos;
+
+    /** 支持类型*/
+    private List<SupportDto> supports;
 
 }

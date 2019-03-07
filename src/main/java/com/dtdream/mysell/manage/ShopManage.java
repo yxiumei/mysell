@@ -88,7 +88,7 @@ public class ShopManage {
         Shop shop = shopImagesDto.getShop();
         Date date = new Date();
         shop.setUpdateTime(date);
-        int update = shopMapper.update(shop);
+        int update = shopMapper.updateByPrimaryKeySelective(shop);
         if (update != 1){
             log.error("OP[]ShopManage[]update[]update shop info fail");
             new Exception();

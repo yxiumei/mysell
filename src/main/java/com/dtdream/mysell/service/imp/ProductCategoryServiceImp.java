@@ -1,6 +1,5 @@
 package com.dtdream.mysell.service.imp;
 
-import ch.qos.logback.classic.Logger;
 import com.dtdream.mysell.dto.Response;
 import com.dtdream.mysell.mapper.ProductCategoryMapper;
 import com.dtdream.mysell.model.ProductCategory;
@@ -8,9 +7,7 @@ import com.dtdream.mysell.service.ProductCategoryService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
-import org.omg.PortableInterceptor.INACTIVE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class ProductCategoryServiceImp implements ProductCategoryService {
 
-    @Autowired
+    @Autowired(required = false)
     private ProductCategoryMapper productCategoryMapper;
 
     @Override

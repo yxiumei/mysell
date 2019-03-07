@@ -15,6 +15,9 @@ public class ShopImagesDto {
      * 公告
      */
     private String bulletin;
+    /**
+     * 店铺信息
+     */
     private String infos;
     /** 店铺图片 */
     private String shopImg1;

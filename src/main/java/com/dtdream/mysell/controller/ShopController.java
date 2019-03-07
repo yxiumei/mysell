@@ -1,6 +1,7 @@
 package com.dtdream.mysell.controller;
 
 import com.dtdream.mysell.dto.Response;
+import com.dtdream.mysell.dto.ShopDto;
 import com.dtdream.mysell.dto.ShopImagesDto;
 import com.dtdream.mysell.model.Shop;
 import com.dtdream.mysell.service.ShopService;
@@ -24,6 +25,8 @@ import java.util.Map;
 @Controller
 @RequestMapping(value = "/admin/shop")
 public class ShopController {
+
+    private static final String SHOP_ID = "8518886";
 
     @Autowired
     private ShopService shopService;
@@ -69,5 +72,10 @@ public class ShopController {
         return new ModelAndView("redirect:/admin/shop/list");
     }
 
-
+    @ResponseBody
+    @RequestMapping(value = "/getShopInfo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response<ShopDto> getShopInfo() {
+        Response<ShopDto> shopInfo = shopService.getShopInfo(SHOP_ID);
+        return shopInfo;
+    }
 }
