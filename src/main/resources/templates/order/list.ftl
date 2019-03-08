@@ -7,9 +7,6 @@
 
 <#--边栏sidebar-->
     <#include "../common/nav.ftl">
-    <#--<div class="jumbotron text-center" style="margin-bottom:0;height: 120px;">-->
-        <#--<h2>永福记后台管理系统</h2>-->
-    <#--</div>-->
 <#--主要内容content-->
     <div id="page-content-wrapper" style="margin-top:0px">
         <div class="container-fluid">
@@ -18,7 +15,12 @@
 
                     <nav class="navbar navbar-default" role="navigation">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="#">我的订单</a>
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button> <a class="navbar-brand" href="#">我的订单</a>
                         </div>
 
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -34,13 +36,25 @@
                             </form>
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                    <a href="#">导出</a>
+                                    <a href="/sell/order/export">导出</a>
                                 </li>
                             </ul>
                         </div>
-
                     </nav>
-
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li class="nav">
+                                <span>&nbsp;&nbsp;总销售额:</span>
+                                <label>&nbsp;${salesAount.totalAmout}</label>
+                                <label>&nbsp;&nbsp;元</label>
+                            </li>
+                            <li class="nav">
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;本月销售额:</span>
+                                <label>&nbsp;${salesAount.thisMonth}</label>
+                                <label>&nbsp;&nbsp;元</label>
+                            </li>
+                        </ul>
+                    </div>
                     <table class="table table-bordered table-condensed">
                         <thead>
                         <tr>
@@ -53,7 +67,6 @@
                             <th>订单状态</th>
                             <th>支付状态</th>
                             <th>创建时间</th>
-                        <#--<th>更新时间</th>-->
                             <th colspan="2">操作</th>
                         </tr>
                         </thead>
@@ -69,7 +82,6 @@
                 <td>${orderDto.orderStatusStr}</td>
                 <td>${orderDto.payStatusStr}</td>
                 <td>${orderDto.createTime?string('yyyy.MM.dd HH:mm:ss')}</td>
-            <#--<td>${orderDto.updateTime?string('yyyy.MM.dd HH:mm:ss')}</td>-->
                 <td><a href="/sell/order/detail/${orderDto.orderId}">详情</a></td>
                 <td>
             <#if orderDto.getOrderStatus() == 0>

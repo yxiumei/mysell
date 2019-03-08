@@ -2,6 +2,7 @@ package com.dtdream.mysell.service;
 
 import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
+import com.dtdream.mysell.dto.SalesAmountDto;
 import com.github.pagehelper.PageInfo;
 
 public interface OrderMasterService {
@@ -22,4 +23,10 @@ public interface OrderMasterService {
      * @return
      */
     Response<PageInfo<OrderDto>> findAll(Integer pageNo, Integer pageSize);
+
+    /**
+     * 获得销售额
+     * @return
+     */
+    Response<SalesAmountDto> getSalesAount();
 }

@@ -99,6 +99,13 @@
 			<artifactId>weixin-java-mp</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+
+		<!-- poi 导出excel -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.17</version>
+		</dependency>
 	</dependencies>
 
 

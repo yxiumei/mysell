@@ -136,6 +136,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Response<List<OrderDto>> findAll() {
+        List<OrderMaster> all = orderMasterMapper.findAll();
+        List<OrderDto> orderDtos = OrderMaster2OrderDtoConverter.convert(all);
+        return Response.ok(orderDtos);
+    }
+
+    @Override
     public Response<OrderDto> cancel(OrderDto orderDto) {
         try{
             OrderMaster orderMaster = new OrderMaster();

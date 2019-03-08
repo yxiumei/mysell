@@ -37,6 +37,11 @@ public interface OrderService {
     Response<PageInfo<OrderDto>> findOrderList(Integer pageNo, Integer pageSize, String buyerOpenId);
 
     /**
+     * 查询订单列表
+     * @return
+     */
+    Response<List<OrderDto>> findAll();
+    /**
      *  取消订单
      * @param orderDto
      * @return

@@ -23,8 +23,7 @@ public class ProductCategoryServiceImp implements ProductCategoryService {
 
     @Override
     public int deleteByPrimaryKey(Integer categoryId) {
-        int i = productCategoryMapper.deleteByPrimaryKey(categoryId);
-        return i;
+        return productCategoryMapper.deleteByPrimaryKey(categoryId);
     }
 
     @Override

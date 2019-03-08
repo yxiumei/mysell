@@ -74,13 +74,13 @@
                 <#if currentPage lte 1>
                 <li class="disabled"><a href="#">上一页</a></li>
                 <#else>
-                <li><a href="/sell/category/product/list?page=${currentPage - 1}&pageSize=${size}">上一页</a></li>
+                <li><a href="/sell/category/list?page=${currentPage - 1}&pageSize=${size}">上一页</a></li>
                 </#if>
 
                 <#list 1..categoryPage.pages as index>
                     <#if currentPage == index>
                         <li class="disabled">
-                            <a href="/sell/category/product/list?page=${index}&pageSize=${size}">${index}</a>
+                            <a href="/sell/category/list?page=${index}&pageSize=${size}">${index}</a>
                         </li>
                     <#else>
                         <li>

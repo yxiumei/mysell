@@ -2,23 +2,29 @@ package com.dtdream.mysell.controller;
 
 import com.dtdream.mysell.dto.OrderDto;
 import com.dtdream.mysell.dto.Response;
+import com.dtdream.mysell.dto.SalesAmountDto;
 import com.dtdream.mysell.enums.ErrorMessage;
 import com.dtdream.mysell.model.OrderDetail;
 import com.dtdream.mysell.service.OrderMasterService;
 import com.dtdream.mysell.service.OrderService;
+import com.dtdream.mysell.utils.ExcelUtil;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +38,8 @@ import java.util.Map;
 @RequestMapping("/order")
 public class OrderController {
 
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+
     @Autowired
     private OrderMasterService orderMasterService;
     @Autowired
@@ -42,9 +50,12 @@ public class OrderController {
                                       @RequestParam(value = "pageSize",defaultValue = "10") Integer pageSize,
                                       Map<String,Object> map){
         Response<PageInfo<OrderDto>> all = orderMasterService.findAll(page, pageSize);
+        // 查询销售额信息
+        Response<SalesAmountDto> salesAount = orderMasterService.getSalesAount();
         map.put("orderPage", all.getData());
         map.put("currentPage", page);
         map.put("size", pageSize);
+        map.put("salesAount", salesAount.getData());
         return new ModelAndView("order/list",map);
     }
 
@@ -145,6 +156,51 @@ public class OrderController {
             map.put("msg","完结订单失败！");
             return new ModelAndView("/error",map);
         }
+    }
 
+    /**
+     * 导出订单数据
+     * @param response
+     */
+    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    public void export(HttpServletResponse response) {
+        String excelName = "订单数据";
+        String[] columnName = new String[]{"订单号","姓名","手机号","地址","金额","订单状态","支付状态","创建时间","修改时间"};
+        String[] keys = new String[]{"orderId","buyerName","buyerPhone","buyerAddress","orderAmount","orderStatusStr",
+                "payStatusStr","createTime","updateTime"};
+        try {
+            Response<List<OrderDto>> all = orderService.findAll();
+            if (all.isSuccess() && !CollectionUtils.isEmpty(all.getData())) {
+                List<Map<String, Object>> datas = new ArrayList<>();
+                List<OrderDto> data = all.getData();
+                for (OrderDto orderDto : data) {
+                    Map<String, Object> map = new HashMap(16);
+                    map.put("orderId",orderDto.getOrderId());
+                    map.put("buyerName", orderDto.getBuyerName());
+                    map.put("buyerPhone", orderDto.getBuyerPhone());
+                    map.put("buyerAddress", orderDto.getBuyerAddress());
+                    map.put("orderAmount", orderDto.getOrderAmount().toString());
+                    map.put("orderStatusStr", orderDto.getOrderStatusStr());
+                    map.put("payStatusStr", orderDto.getPayStatusStr());
+                    map.put("createTime", FORMAT.format(orderDto.getCreateTime()));
+                    map.put("updateTime", FORMAT.format(orderDto.getUpdateTime()));
+                    datas.add(map);
+                }
+                Workbook workBook = ExcelUtil.createWorkBook(excelName, datas, keys, columnName);
+                response.setHeader("content-Type", "application/vnd.ms-excel");
+                //默认Excel名称
+                String filename= "订单列表";
+                response.setHeader("Content-disposition", "attachment;filename="
+                        + new String(filename.getBytes("gbk"), "iso8859-1")+".xls");
+                //response.setHeader("Content-disposition", "attachment;filename=订单列表.xls");
+                response.flushBuffer();
+                ServletOutputStream outputStream = response.getOutputStream();
+                workBook.write(outputStream);
+                workBook.close();
+                outputStream.close();
+            }
+    } catch (Exception e){
+        e.printStackTrace();
+    }
     }
 }
