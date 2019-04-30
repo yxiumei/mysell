@@ -2,13 +2,15 @@ package com.dtdream.mysell.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * http请求返回最外成对象
  * @author yxiumei
  * @param <T>
  */
 @Data
-public class Response<T> {
+public class Response<T> implements Serializable {
 
     /** 错误码 */
     private Integer code;
@@ -26,20 +28,18 @@ public class Response<T> {
      */
     private boolean isSuccess;
 
-    public static Response ok(Object obj){
-        Response response = new Response();
-        response.setData(obj);
-        response.setCode(200);
-        response.setSuccess(Boolean.TRUE);
-        response.setMsg("成功");
-        return response;
+    public Response(Integer code, String msg, T data, boolean isSuccess) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+        this.isSuccess = isSuccess;
     }
 
-    public static Response fail(String str){
-        Response response = new Response();
-        response.setMsg(str);
-        response.setCode(500);
-        response.setSuccess(Boolean.FALSE);
-        return response;
+    public static <T> Response<T> ok(Object obj){
+        return new Response(200, "成功", obj, Boolean.TRUE);
+    }
+
+    public static <T> Response<T> fail(String str){
+        return new Response(500, str, (Object)null ,  Boolean.FALSE);
     }
 }

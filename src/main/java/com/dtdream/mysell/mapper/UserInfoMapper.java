@@ -30,4 +30,12 @@ public interface UserInfoMapper {
      * @return
      */
     UserInfo selectByOpenId(@Param("openId") String openId);
+
+    /**
+     * 通过用户名查询用户信息
+     * @param username 用户名
+     * @return
+     */
+    UserInfo findUserByUserName(@Param("username") String username);
+
 }

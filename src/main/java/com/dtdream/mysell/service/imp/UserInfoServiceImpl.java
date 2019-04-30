@@ -54,7 +54,7 @@ public class UserInfoServiceImpl implements UserInfoService{
             }
             return Response.ok(Boolean.TRUE);
         } catch (Exception e) {
-            log.error("OP[]UserInfoServiceImpl[]insert[]insert user info fail:{}",e.getStackTrace());
+            log.error("OP[]UserInfoServiceImpl[]insert[]insert user info fail:{}", (Object) e.getStackTrace());
             return Response.fail(ErrorMessage.SAVE_USER_INFO_FAIL.toString());
         }
 
@@ -77,5 +77,11 @@ public class UserInfoServiceImpl implements UserInfoService{
             log.error("OP[]UserInfoServiceImpl[]findUserInfoByOpenId[]openId:{}find user info fail:{}",openId,e.fillInStackTrace());
             return Response.fail(ErrorMessage.FIND_USER_INFO_FAIL.toString());
         }
+    }
+
+    @Override
+    public Response<UserInfo> findUserInfoByUserNameAndPassWord(String userName, String passWord) {
+
+        return null;
     }
 }

@@ -52,4 +52,10 @@
         from <include refid="table"/>
         where openid = #{openId,jdbcType=INTEGER}
     </select>
+    <select id="findUserByUserName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List" />
+        from <include refid="table"/>
+        where username = #{username,jdbcType=VARCHAR}
+    </select>
 </mapper>
