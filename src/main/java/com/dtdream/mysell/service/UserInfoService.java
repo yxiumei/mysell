@@ -23,4 +23,12 @@ public interface UserInfoService {
      * @return
      */
     Response<UserInfo> findUserInfoByOpenId(String openId);
+
+    /**
+     * 查询用户信息
+     * @param userName 用户名
+     * @param passWord 密码
+     * @return
+     */
+    Response<UserInfo> findUserInfoByUserNameAndPassWord(String userName, String passWord);
 }
