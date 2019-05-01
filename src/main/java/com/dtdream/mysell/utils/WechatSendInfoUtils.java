@@ -43,7 +43,7 @@ public class WechatSendInfoUtils{
             String result = wxService.getTemplateMsgService().sendTemplateMsg(templateMessage);
             log.error("OP[]WechatSendInfoUtils[]send info result:{}", result);
         } catch (Exception e) {
-            log.error("OP[]WechatSendInfoUtils[]send info error:{}",e.getStackTrace());
+            log.error("OP[]WechatSendInfoUtils[]send info error:{}", (Object) e.getStackTrace());
         }
     }
 

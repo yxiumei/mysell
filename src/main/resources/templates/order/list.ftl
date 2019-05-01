@@ -171,7 +171,7 @@
 
 <!-- 播放音乐 -->
 <audio id="notice" loop="loop">
-    <source src="/sell/mp3/ordernotice.mp3" type="audio/mpeg">
+    <source src="/sell/static/mp3/ordernotice.mp3" type="audio/mpeg">
 </audio>
 <script>
     var webSocket = null;

@@ -3,8 +3,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
-    password: mysql123
-    url: jdbc:mysql:///sell?characterEncoding=utf-8&useSSL=false
+    password: 123456
+    url: jdbc:mysql://47.107.240.107:3306/sell?characterEncoding=utf-8&useSSL=false
 # 分页
 pagehelper:
   helper-dialect: mysql
@@ -17,11 +17,11 @@ server:
     context-path: /sell
 
 wechat:
-  mpAppId: ""
-  mpAppSecret: ""
+  mpAppId: wx20b240b1b2dcc948
+  mpAppSecret: 32beae30224fb244b1af5e0a3e466860
   mchKey: ""
   ketPath: ""
-  notifyUrl: ""
+  notifyUrl: http://mall.yxiumei.xyz/sell/wechat/userInfo
 #logging:
 #  level:
 #    com.dtdream.mysell.mapper: debug

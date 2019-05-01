@@ -81,7 +81,10 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     @Override
     public Response<UserInfo> findUserInfoByUserNameAndPassWord(String userName, String passWord) {
-
-        return null;
+        UserInfo userByUserName = userInfoMapper.findUserByUserName(userName);
+        if (null == userByUserName || !passWord.equals(userByUserName.getPassword())) {
+            return Response.fail(ErrorMessage.USER_NAME_OR_PASSWORD_ERROR.toString());
+        }
+        return Response.ok(userByUserName);
     }
 }

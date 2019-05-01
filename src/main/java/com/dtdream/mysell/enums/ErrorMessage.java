@@ -64,7 +64,9 @@ public enum ErrorMessage {
     /** 保存用户信息失败 */
     SAVE_USER_INFO_FAIL("save.user.info.fail"),
     /** 查询用户信息失败 */
-    FIND_USER_INFO_FAIL("find.user.info.fail")
+    FIND_USER_INFO_FAIL("find.user.info.fail"),
+    /** 用户名或密码错误*/
+    USER_NAME_OR_PASSWORD_ERROR("user.name.or.password.error"),
     ;
 
     /**
